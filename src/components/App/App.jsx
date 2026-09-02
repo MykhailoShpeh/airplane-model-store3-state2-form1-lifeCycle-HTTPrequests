@@ -957,6 +957,7 @@ export class App extends Component {
             // onHighlightTextProtection={this.highlightTextProtection}
             searchInputValue={searchInputValue}
             radioButtonValue={radioButtonValue}
+            activeuser={activeUser}
           />
         </Section >
         {/* <Section

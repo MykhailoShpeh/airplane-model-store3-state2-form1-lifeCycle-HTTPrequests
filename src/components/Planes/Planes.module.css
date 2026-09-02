@@ -97,3 +97,8 @@ h3 {
     border-radius: 3px;
     padding: 0 2px;
 }
+
+.but:disabled {
+    background-color: grey;
+    color: darkgray;
+}

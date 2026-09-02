@@ -57,7 +57,8 @@ export function Planes({
     // onHighlightTextProtection,
     searchInputValue,
     radioButtonValue,
-    modelColorPrice
+    modelColorPrice,
+    activeuser
 }) {
     function printlActualimages(urlActual) {
         urlActual.map
@@ -141,7 +142,7 @@ export function Planes({
                 description={description}
             />
             <button
-                disabled={urlActual[0] === template}
+                disabled={urlActual[0] === template || !activeuser}
                 className={
                     urlActual[0] === template
                         ? `${css.but} ${css.disabled}`
