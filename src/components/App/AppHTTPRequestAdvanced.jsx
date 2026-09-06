@@ -1,0 +1,45 @@
+// console.log(
+//   "%c 6.2.Архітектура компонентів та станів з HTTP-запитами ",
+//   "color: white; background-color: #D33F49",
+// );
+
+// https://pokeapi.co/
+// https://pokeapi.co/api/v2/pokemon
+
+import React, { Component } from "react";
+// https://www.npmjs.com/package/react-toasti
+// https://fkhadra.github.io/react-toastify/introduction/
+
+import css from './AppHTTPRequestAdvanced.module.css'
+
+import {PokemonForm} from '@/components/Pokemon/PokemonForm.jsx'
+
+
+export class AppHTTPRequestAdvanced extends Component {
+    state = {
+        pokemonName: null
+    }
+
+    submitForm = (pokemonName) => {
+            console.log("✅Дані з форми PokemonForm:", pokemonName);
+            this.setState({
+                pokemonName
+            })
+        }
+
+    render() {
+
+        const { pokemonName } = this.state
+        
+        console.log("----------------------------------------------");
+        console.log("✅🐷 Ім'я покемона:", pokemonName);
+        console.log("----------------------------------------------");
+
+        return (
+            <div className={css.mainContainer} >
+                <PokemonForm onSubmit={this.submitForm}/>
+
+            </div>
+        )
+    }
+}

@@ -15,7 +15,8 @@ import {
   AppUncontrolledElementsForm, //! 4.4.1.Неконтрольовані елементи форм
   AppControlledElementsForm, //! 4.4.2.Контрольовані елементи форм
   AppComplexForms, //! 4.4.3.Складні форми
-  AppHTTPRequestBasics
+  AppHTTPRequestBasics,
+  AppHTTPRequestAdvanced
 } from '@/components/App';
 
 
@@ -32,7 +33,8 @@ createRoot(document.getElementById('root')).render(
       {/* <AppComplexForms onSubmit={values => console.log(values)}/> */}
       {/* <AppComplexForms /> */}
       {/* //! HTTPRequest */}
-        <AppHTTPRequestBasics />
+        {/* <AppHTTPRequestBasics /> */}
+        <AppHTTPRequestAdvanced />
 
     </BrowserRouter>
   </StrictMode >
