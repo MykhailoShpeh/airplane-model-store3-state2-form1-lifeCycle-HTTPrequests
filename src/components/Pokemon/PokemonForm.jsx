@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 
+// https://www.npmjs.com/package/react-toasti
+// https://fkhadra.github.io/react-toastify/introduction/
+import { toast } from 'react-toastify'; //! 02.Підлючення/виклик бібліотеки react-toastify
+import { ImSearch } from 'react-icons/im';
 import css from './PokemonForm.module.css'
 
 const INITIAL_STATE = {
@@ -18,6 +22,11 @@ export class PokemonForm extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault()
+        if (this.state.pokemonName.trim() === '') {
+            alert("Введіть ім'я покемона");
+            toast.error("Введіть ім'я покемона"); //! 02.Підлючення/виклик бібліотеки react-toastify
+            return
+        }
         console.log("event: ", event);
         const { pokemonName } = this.state;
         this.props.onSubmit({ pokemonName })
@@ -32,12 +41,15 @@ export class PokemonForm extends Component {
         console.log("Значення name:", name);
         console.log("Значення value:", value);
 
+
         // //! Зберігаємо значення інпутів в state
         this.setState({
             //! Використовуємо властивості об'єкта, що обчислюються
             [name]: value,
         });
     }
+
+
 
     render() {
 
@@ -62,11 +74,16 @@ export class PokemonForm extends Component {
                     name="pokemonName"
                     value={pokemonName}
                     onChange={this.handleChange}
+                    required
                 />
+
                 <button
                     className={css.pokemonButton}
                     type="submit"
-                >Знайти</button>
+                >
+                    <ImSearch style={{ marginRight: 8 }} />
+                    Знайти
+                    </button>
             </form>
         )
     }

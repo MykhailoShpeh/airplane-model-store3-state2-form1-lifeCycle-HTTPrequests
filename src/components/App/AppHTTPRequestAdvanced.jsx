@@ -9,10 +9,12 @@
 import React, { Component } from "react";
 // https://www.npmjs.com/package/react-toasti
 // https://fkhadra.github.io/react-toastify/introduction/
+import { ToastContainer } from 'react-toastify'; //! 01.Підлючення бібліотеки react-toastify
+
 
 import css from './AppHTTPRequestAdvanced.module.css'
 
-import {PokemonForm} from '@/components/Pokemon/PokemonForm.jsx'
+import { PokemonForm } from '@/components/Pokemon/PokemonForm.jsx'
 
 
 export class AppHTTPRequestAdvanced extends Component {
@@ -21,24 +23,24 @@ export class AppHTTPRequestAdvanced extends Component {
     }
 
     submitForm = (pokemonName) => {
-            console.log("✅Дані з форми PokemonForm:", pokemonName);
-            this.setState({
-                pokemonName
-            })
-        }
+        console.log("✅Дані з форми PokemonForm:", pokemonName);
+        this.setState({
+            pokemonName
+        })
+    }
 
     render() {
 
         const { pokemonName } = this.state
-        
+
         console.log("----------------------------------------------");
         console.log("✅🐷 Ім'я покемона:", pokemonName);
         console.log("----------------------------------------------");
 
         return (
             <div className={css.mainContainer} >
-                <PokemonForm onSubmit={this.submitForm}/>
-
+                <PokemonForm onSubmit={this.submitForm} />
+                <ToastContainer autoClose={2000} />
             </div>
         )
     }
