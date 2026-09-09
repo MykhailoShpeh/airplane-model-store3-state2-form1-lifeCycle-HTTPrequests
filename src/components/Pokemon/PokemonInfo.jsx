@@ -4,6 +4,7 @@ import css from './Pokemoninfo.module.css';
 
 export class PokemonInfo extends Component {
     state = {
+        pokemon: null, //! об'єкт з даними про Покемона
 
     }
 
@@ -17,10 +18,32 @@ export class PokemonInfo extends Component {
             console.log("❗️Змінилося ім'я ПОКЕМОНА");
             console.log("⏮️prevName (prevProps.pokemonName): ", prevProps.pokemonName);
             console.log("⏭️nextName (this.props.pokemonName): ", this.props.pokemonName);
+
+            //todo робимо запит 
+            // fetch(`https://pokeapi.co/api/v2/pokemon/${nextName}`)
+            setTimeout(() => {
+                fetch(`https://pokeapi.co/api/v2/pokemon/${nextName}`)
+                    .then(res => res.json())
+                    // .then(pokemon => console.log("pokemon:", pokemon))
+                    .then(pokemon => this.setState({ pokemon }))
+                // .finally(() => this.setState({ loading: false }));
+
+            }, 2000);
         }
     }
 
     render() {
+
+        const {
+            pokemon
+        } = this.state
+
+        console.log("----------------------------------------------");
+        console.log("ℹ️🐷 Покемон:", pokemon);
+        // console.log("ℹ️⏳ Індикатор завантаження (лоадер):", loading);
+        console.log("----------------------------------------------");
+
+
         return (
             <div className={css.pokemonInfo}>
                 <h1>PokemonInfo</h1>
