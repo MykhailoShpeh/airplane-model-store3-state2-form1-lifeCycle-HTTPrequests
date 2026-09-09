@@ -58,7 +58,8 @@ export class PokemonInfo extends Component {
                 {pokemon && <div className={css.pokemonContainer}>
                    <p className={css.pokemonName}><u><i>Покемон</i></u>: <b>{pokemon.name}</b></p>
                     <img
-                        src={pokemon.sprites.other.home.front_default}
+                        // src={pokemon.sprites.other.home.front_default} //todo: var.1
+                        src={pokemon.sprites.other["official-artwork"].front_default}  //todo: var.2
                         width="300"
                         alt={pokemon.name}
                     />
