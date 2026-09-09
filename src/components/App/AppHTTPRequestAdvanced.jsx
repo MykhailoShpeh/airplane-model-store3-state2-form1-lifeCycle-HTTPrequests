@@ -16,6 +16,7 @@ import css from './AppHTTPRequestAdvanced.module.css'
 
 import { PokemonForm } from '@/components/Pokemon/PokemonForm.jsx'
 
+import { PokemonInfo } from '@/components/Pokemon/PokemonInfo.jsx';
 
 export class AppHTTPRequestAdvanced extends Component {
     state = {
@@ -40,6 +41,7 @@ export class AppHTTPRequestAdvanced extends Component {
         return (
             <div className={css.mainContainer} >
                 <PokemonForm onSubmit={this.submitForm} />
+                <PokemonInfo pokemonName={pokemonName}/>
                 <ToastContainer autoClose={2000} />
             </div>
         )

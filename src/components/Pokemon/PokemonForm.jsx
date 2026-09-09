@@ -29,7 +29,7 @@ export class PokemonForm extends Component {
         }
         console.log("event: ", event);
         const { pokemonName } = this.state;
-        this.props.onSubmit({ pokemonName })
+        this.props.onSubmit(pokemonName)
 
         this.reset()
     }
