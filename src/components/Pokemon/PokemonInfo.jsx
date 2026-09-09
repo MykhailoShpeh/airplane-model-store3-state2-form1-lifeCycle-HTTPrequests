@@ -42,6 +42,10 @@ export class PokemonInfo extends Component {
             loading
         } = this.state
 
+        const {
+            pokemonName
+        } = this.props
+
         console.log("----------------------------------------------");
         console.log("ℹ️🐷 Покемон:", pokemon);
         console.log("ℹ️⏳ Індикатор завантаження (лоадер):", loading);
@@ -51,11 +55,11 @@ export class PokemonInfo extends Component {
         return (
             <div className={css.pokemonInfo}>
                 <h1>PokemonInfo</h1>
-                {!pokemon && <h2><i>Введіть ім'я покемона</i></h2>}
-                <h2><u><i>Ви ввели ім'я покемона</i></u>: <b>???</b></h2>
+                {!loading && !pokemon && <h2><i>Введіть ім'я покемона</i></h2>}
+                {pokemon && <h2><u><i>Ви ввели ім'я покемона</i></u>: <b>{pokemonName}</b></h2>}
                 {loading && <h2 className={css.pokemonInfoLoading}>Завантажуємо покемон...</h2>}
                 
-                {pokemon && <div className={css.pokemonContainer}>
+                {!loading && pokemon && <div className={css.pokemonContainer}>
                    <p className={css.pokemonName}><u><i>Покемон</i></u>: <b>{pokemon.name}</b></p>
                     <img
                         // src={pokemon.sprites.other.home.front_default} //todo: var.1
