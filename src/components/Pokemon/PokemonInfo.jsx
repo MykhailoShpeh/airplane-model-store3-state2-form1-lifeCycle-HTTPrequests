@@ -20,7 +20,11 @@ export class PokemonInfo extends Component {
             console.log("⏮️prevName (prevProps.pokemonName): ", prevProps.pokemonName);
             console.log("⏭️nextName (this.props.pokemonName): ", this.props.pokemonName);
 
-            this.setState({ loading: true }); //! індикатор завантаження (лоадер) 
+            this.setState({
+                pokemon: null,
+                loading: true,
+            }); //! індикатор завантаження (лоадер) 
+
 
             //todo робимо запит 
             // fetch(`https://pokeapi.co/api/v2/pokemon/${nextName}`)
@@ -55,19 +59,23 @@ export class PokemonInfo extends Component {
         return (
             <div className={css.pokemonInfo}>
                 <h1>PokemonInfo</h1>
-                {!loading && !pokemon && <h2><i>Введіть ім'я покемона</i></h2>}
-                {pokemon && <h2><u><i>Ви ввели ім'я покемона</i></u>: <b>{pokemonName}</b></h2>}
-                {loading && <h2 className={css.pokemonInfoLoading}>Завантажуємо покемон...</h2>}
-                
-                {!loading && pokemon && <div className={css.pokemonContainer}>
-                   <p className={css.pokemonName}><u><i>Покемон</i></u>: <b>{pokemon.name}</b></p>
-                    <img
-                        // src={pokemon.sprites.other.home.front_default} //todo: var.1
-                        src={pokemon.sprites.other["official-artwork"].front_default}  //todo: var.2
-                        width="300"
-                        alt={pokemon.name}
-                    />
-                </div>}
+                {!loading && !pokemon &&
+                    <h2><i>Введіть ім'я покемона</i></h2>}
+                {pokemon &&
+                    <h2><u><i>Ви ввели ім'я покемона</i></u>: <b>{pokemonName}</b></h2>}
+                {loading &&
+                    <h2 className={css.pokemonInfoLoading}>Завантажуємо покемон...</h2>}
+
+                {pokemon &&
+                    <div className={css.pokemonContainer}>
+                        <p className={css.pokemonName}><u><i>Покемон</i></u>: <b>{pokemon.name}</b></p>
+                        <img
+                            // src={pokemon.sprites.other.home.front_default} //todo: var.1
+                            src={pokemon.sprites.other["official-artwork"].front_default}  //todo: var.2
+                            width="300"
+                            alt={pokemon.name}
+                        />
+                    </div>}
             </div>
         )
     }
