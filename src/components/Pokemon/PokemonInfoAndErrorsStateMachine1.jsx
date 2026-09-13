@@ -8,6 +8,11 @@ import css from './Pokemoninfo.module.css';
 //?     - rejected - відповідь на запит з помилкою
 //?     - resolved - успішна відповідь на запит
 
+//* Плюси використання паттерна State Machine:
+//*     - Зникають проблеми скидання полів «щоб працювало».
+//*     - Не слід стежити за значеннями N полів. 
+//*     - Зрозуміліші умови рендеру розмітки.
+
 
 export class PokemonInfoAndErrorsStateMachine1 extends Component {
     state = {
