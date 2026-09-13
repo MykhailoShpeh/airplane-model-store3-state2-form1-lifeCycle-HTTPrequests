@@ -18,3 +18,8 @@
 .pokemonName {
     font-size: x-large;
 }
+
+.pokemonInfoTitleError {
+    color: #9b0000;
+    text-shadow: 4px 4px 12px #310000;
+}

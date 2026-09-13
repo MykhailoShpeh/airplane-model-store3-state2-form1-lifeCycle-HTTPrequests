@@ -5,7 +5,9 @@ import css from './Pokemoninfo.module.css';
 export class PokemonInfo extends Component {
     state = {
         pokemon: null, //! об'єкт з даними про Покемона
-        loading: false //! індикатор завантаження (лоадер)
+        loading: false, //! індикатор завантаження (лоадер)
+        error: null //todo: Обробка помилок
+
     }
 
 
@@ -21,21 +23,41 @@ export class PokemonInfo extends Component {
             console.log("⏭️nextName (this.props.pokemonName): ", this.props.pokemonName);
 
             this.setState({
-                pokemon: null,
-                loading: true,
-            }); //! індикатор завантаження (лоадер) 
+                pokemon: null, //! прибираємо попереднього покемона при завантаженні наступного
+                loading: true, //! індикатор завантаження (лоадер)
+                error: null, //todo: Обробка помилок - прибираємо можливу попередню помилку
+            });
+
 
 
             //todo робимо запит 
             // fetch(`https://pokeapi.co/api/v2/pokemon/${nextName}`)
             setTimeout(() => {
                 fetch(`https://pokeapi.co/api/v2/pokemon/${nextName}`)
-                    .then(res => res.json())
+                    // .then(res => res.json())
+                    // todo: Обробка помилок
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json()
+                        };
+                        return Promise.reject(new Error(`Покемена з ім'ям «${nextName}» не існує`))
+                    })
                     // .then(pokemon => console.log("pokemon:", pokemon))
-                    .then(pokemon => this.setState({ pokemon }))
+                    .then(pokemon =>
+                        this.setState({
+                            pokemon,
+                            error: null, // todo: Обробка помилок
+                        }))
+
+                    .catch(error => {
+                        this.setState({
+                            error,
+                            pokemon: null
+                        })})
+
                     .finally(() => this.setState({ loading: false })); //! індикатор завантаження (лоадер) змніюємо на false
 
-            }, 2000);
+            }, 3000);
         }
     }
 
@@ -43,7 +65,8 @@ export class PokemonInfo extends Component {
 
         const {
             pokemon,
-            loading
+            loading,
+            error
         } = this.state
 
         const {
@@ -51,18 +74,28 @@ export class PokemonInfo extends Component {
         } = this.props
 
         console.log("----------------------------------------------");
-        console.log("ℹ️🐷 Покемон:", pokemon);
+        console.log("ℹ️props-> 🐷 Покемон-ім'я:", pokemonName);
+        console.log("ℹ️{🐷} Покемон-об'єкт:", pokemon);
         console.log("ℹ️⏳ Індикатор завантаження (лоадер):", loading);
+        console.log("ℹ️❌ Помилка:", error);
         console.log("----------------------------------------------");
 
 
         return (
             <div className={css.pokemonInfo}>
                 <h1>PokemonInfo</h1>
-                {!loading && !pokemon &&
+
+                {/* //todo: Обробка помилок */}
+                {/* {error && <h2>Покемена з ім'ям {pokemonName} не існує</h2>} */}
+                {error &&
+                    <h2 className={css.pokemonInfoTitleError}>{error.message}</h2>}
+
+                {!error && !loading && !pokemon &&
                     <h2><i>Введіть ім'я покемона</i></h2>}
+
                 {pokemon &&
                     <h2><u><i>Ви ввели ім'я покемона</i></u>: <b>{pokemonName}</b></h2>}
+
                 {loading &&
                     <h2 className={css.pokemonInfoLoading}>Завантажуємо покемон...</h2>}
 
