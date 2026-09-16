@@ -12,8 +12,8 @@ import { PokemonForm } from '@/components/Pokemon/PokemonForm.jsx'; //! форм
 import { PokemonInfo } from '@/components/Pokemon/PokemonInfo.jsx'; //! компонент, який приймає ім'я покемона, робить запит та будує розмітку 
 // import { PokemonInfoAndErrors } from '@/components/Pokemon/PokemonInfoAndErrors.jsx'; //! /! компонент, який приймає ім'я покемона, робить запит, будує розмітку та обробляє помилки 
 import { PokemonInfoAndErrorsStateMachine1 } from '@/components/Pokemon/PokemonInfoAndErrorsStateMachine1.jsx'; //! /! компонент, який приймає ім'я покемона, робить запит, будує розмітку та обробляє помилки + State Machine
-// import { PokemonInfoAndErrorsStateMachine21 } from '@/components/Pokemon/PokemonInfoAndErrorsStateMachine21.jsx'; //! /! компонент, який приймає ім'я покемона, робить запит, будує розмітку та обробляє помилки + State Machine (чистий код)
-// import { PokemonInfoAndErrorsStateMachine22 } from '@/components/Pokemon/PokemonInfoAndErrorsStateMachine22.jsx'; //! /! компонент, який приймає ім'я покемона, робить запит, будує розмітку та обробляє помилки + State Machine + Рефакторинг + React-skeleton
+import { PokemonInfoAndErrorsStateMachine21 } from '@/components/Pokemon/PokemonInfoAndErrorsStateMachine21.jsx'; //! /! компонент, який приймає ім'я покемона, робить запит, будує розмітку та обробляє помилки + State Machine (чистий код)
+import { PokemonInfoAndErrorsStateMachine22 } from '@/components/Pokemon/PokemonInfoAndErrorsStateMachine22.jsx'; //! /! компонент, який приймає ім'я покемона, робить запит, будує розмітку та обробляє помилки + State Machine + Рефакторинг + React-skeleton
 // import { PokemonInfoAndErrorsStateMachine23 } from '@/components/Pokemon/PokemonInfoAndErrorsStateMachine23.jsx'; //! /! компонент, який приймає ім'я покемона, робить запит, будує розмітку та обробляє помилки + State Machine + Рефакторинг + React-skeleton (чистий код) 
 
 import { ToastContainer } from 'react-toastify'; //! 01.Підлючення бібліотеки react-toastify
@@ -57,13 +57,13 @@ export class AppHTTPRequestAdvanced extends Component {
           {/* <PokemonInfoAndErrors pokemonName={pokemonName} /> */}
 
           {/* //! HTTP-запит + Розмітка + Обробка помилок + State Machine */}
-          <PokemonInfoAndErrorsStateMachine1 pokemonName={pokemonName} />
+          {/* <PokemonInfoAndErrorsStateMachine1 pokemonName={pokemonName} /> */}
 
           {/* //! HTTP-запит + Розмітка + Обробка помилок + State Machine (чистий код) */}
           {/* <PokemonInfoAndErrorsStateMachine21 pokemonName={pokemonName} /> */}
 
           {/* //! HTTP-запит + Розмітка + Обробка помилок + State Machine + Рефакторинг + React-skeleton */}
-          {/* <PokemonInfoAndErrorsStateMachine22 pokemonName={pokemonName} /> */}
+          <PokemonInfoAndErrorsStateMachine22 pokemonName={pokemonName} />
 
           {/* //! HTTP-запит + Розмітка + Обробка помилок + State Machine + Рефакторинг + React-skeleton (чистий код) */}
           {/* <PokemonInfoAndErrorsStateMachine23 pokemonName={pokemonName} /> */}
