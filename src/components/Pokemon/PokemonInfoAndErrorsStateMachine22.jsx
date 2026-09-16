@@ -2,6 +2,8 @@ import { Component } from 'react';
 
 import { PokemonInfoViewСontainer } from "@/components/Pokemon/PokemonInfoViewСontainer.jsx"
 
+import { PokemonInfoViewError } from "@/components/Pokemon/PokemonInfoViewError.jsx"
+
 import css from "./PokemonInfo.module.css";
 
 //? Застосуємо такі статуси:
@@ -121,7 +123,7 @@ export class PokemonInfoAndErrorsStateMachine22 extends Component {
         // </div>
 
         <PokemonInfoViewСontainer title={"Pokemon Info"}>
-          <h2 className={css.pokemonInfoTitleError}>{error.message}</h2>
+          <PokemonInfoViewError errorMessage={error.message}/>
         </PokemonInfoViewСontainer>
       );
     };
