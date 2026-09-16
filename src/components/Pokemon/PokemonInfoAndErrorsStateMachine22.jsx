@@ -4,6 +4,9 @@ import { PokemonInfoViewСontainer } from "@/components/Pokemon/PokemonInfoView�
 
 import { PokemonInfoViewError } from "@/components/Pokemon/PokemonInfoViewError.jsx"
 
+import { PokemonInfoViewData } from "@/components/Pokemon/PokemonInfoViewData"
+
+
 import css from "./PokemonInfo.module.css";
 
 //? Застосуємо такі статуси:
@@ -144,14 +147,7 @@ export class PokemonInfoAndErrorsStateMachine22 extends Component {
         // </div>
 
         <PokemonInfoViewСontainer title={"Pokemon Info"}>
-          <div className={css.pokemonContainer}>
-            <p className={css.pokemonName}><u><i>Покемон</i></u>: <b>{pokemon.name}</b></p>
-            <img
-              src={pokemon.sprites.other['official-artwork'].front_default} //todo: var.3
-              width="300"
-              alt={pokemon.name}
-            />
-          </div>
+          <PokemonInfoViewData pokemon={pokemon}/>
         </PokemonInfoViewСontainer>
       );
     };
