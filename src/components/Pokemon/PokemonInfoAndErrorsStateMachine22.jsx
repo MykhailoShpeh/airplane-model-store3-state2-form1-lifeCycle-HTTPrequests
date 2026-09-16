@@ -1,4 +1,7 @@
 import { Component } from 'react';
+
+import { PokemonInfoViewСontainer } from "@/components/Pokemon/PokemonInfoViewСontainer.jsx"
+
 import css from "./PokemonInfo.module.css";
 
 //? Застосуємо такі статуси:
@@ -83,39 +86,62 @@ export class PokemonInfoAndErrorsStateMachine22 extends Component {
     //? idle - запиту ще немає, нічого не відбувається
     if (status === 'idle') {
       return (
-        <div className={css.pokemonInfo}>
-          <h1>Pokemon Info</h1>
+        // <div className={css.pokemonInfo}>
+        // <h1>Pokemon Info</h1>
+        // <h2><i>Введіть ім'я покемона</i></h2>
+        // </div>
+        <PokemonInfoViewСontainer title={"Pokemon Info"}>
           <h2><i>Введіть ім'я покемона</i></h2>
-        </div>
+        </PokemonInfoViewСontainer>
       );
     };
 
     //? pending - пішов запит
     if (status === 'pending') {
       return (
-        <div className={css.pokemonInfo}>
-          <h1>Pokemon Info</h1>
+        // <div className={css.pokemonInfo}>
+        //   <h1>Pokemon Info</h1>
+        // <h2><u><i>Ви ввели ім'я покемона</i></u>: <b>{pokemonName}</b></h2>
+        // <h2 className={css.pokemonInfoLoading}>Завантажуємо покемон...</h2>
+        // </div>
+
+        <PokemonInfoViewСontainer title={"Pokemon Info"}>
           <h2><u><i>Ви ввели ім'я покемона</i></u>: <b>{pokemonName}</b></h2>
           <h2 className={css.pokemonInfoLoading}>Завантажуємо покемон...</h2>
-        </div>
+        </PokemonInfoViewСontainer>
       );
     };
 
     //? rejected - відповідь на запит з помилкою
     if (status === 'rejected') {
       return (
-        <div className={css.pokemonInfo}>
-          <h1>Pokemon Info</h1>
+        // <div className={css.pokemonInfo}>
+        //   <h1>Pokemon Info</h1>
+        // <h2 className={css.pokemonInfoTitleError}>{error.message}</h2>
+        // </div>
+
+        <PokemonInfoViewСontainer title={"Pokemon Info"}>
           <h2 className={css.pokemonInfoTitleError}>{error.message}</h2>
-        </div>
+        </PokemonInfoViewСontainer>
       );
     };
 
     //? resolved - успішна відповідь на запит
     if (status === 'resolved') {
       return (
-        <div className={css.pokemonInfo}>
-          <h1>Pokemon Info</h1>
+        // <div className={css.pokemonInfo}>
+        // <h1>Pokemon Info</h1>
+        // <div className={css.pokemonContainer}>
+        //   <p className={css.pokemonName}><u><i>Покемон</i></u>: <b>{pokemon.name}</b></p>
+        //   <img
+        //     src={pokemon.sprites.other['official-artwork'].front_default} //todo: var.3
+        //     width="300"
+        //     alt={pokemon.name}
+        //   />
+        // </div>
+        // </div>
+
+        <PokemonInfoViewСontainer title={"Pokemon Info"}>
           <div className={css.pokemonContainer}>
             <p className={css.pokemonName}><u><i>Покемон</i></u>: <b>{pokemon.name}</b></p>
             <img
@@ -124,7 +150,7 @@ export class PokemonInfoAndErrorsStateMachine22 extends Component {
               alt={pokemon.name}
             />
           </div>
-        </div>
+        </PokemonInfoViewСontainer>
       );
     };
   };

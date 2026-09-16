@@ -1,0 +1,25 @@
+.pokemonInfo {
+    min-width: 90%;
+    margin: 20px auto;
+    padding: 10px 20px;
+    color: #000051;
+    outline: 2px solid blue;
+}
+
+.pokemonInfoLoading {
+    font-family: monospace;
+}
+
+.pokemonContainer {
+    padding: 20px;
+    outline: 1px dashed blue;
+}
+
+.pokemonName {
+    font-size: x-large;
+}
+
+.pokemonInfoTitleError {
+    color: #9b0000;
+    text-shadow: 4px 4px 12px #310000;
+}
