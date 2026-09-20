@@ -14,7 +14,7 @@ import { PokemonInfo } from '@/components/Pokemon/PokemonInfo.jsx'; //! комп
 import { PokemonInfoAndErrorsStateMachine1 } from '@/components/Pokemon/PokemonInfoAndErrorsStateMachine1.jsx'; //! /! компонент, який приймає ім'я покемона, робить запит, будує розмітку та обробляє помилки + State Machine
 import { PokemonInfoAndErrorsStateMachine21 } from '@/components/Pokemon/PokemonInfoAndErrorsStateMachine21.jsx'; //! /! компонент, який приймає ім'я покемона, робить запит, будує розмітку та обробляє помилки + State Machine (чистий код)
 import { PokemonInfoAndErrorsStateMachine22 } from '@/components/Pokemon/PokemonInfoAndErrorsStateMachine22.jsx'; //! /! компонент, який приймає ім'я покемона, робить запит, будує розмітку та обробляє помилки + State Machine + Рефакторинг + React-skeleton
-// import { PokemonInfoAndErrorsStateMachine23 } from '@/components/Pokemon/PokemonInfoAndErrorsStateMachine23.jsx'; //! /! компонент, який приймає ім'я покемона, робить запит, будує розмітку та обробляє помилки + State Machine + Рефакторинг + React-skeleton (чистий код) 
+import { PokemonInfoAndErrorsStateMachine23 } from '@/components/Pokemon/PokemonInfoAndErrorsStateMachine23.jsx'; //! /! компонент, який приймає ім'я покемона, робить запит, будує розмітку та обробляє помилки + State Machine + Рефакторинг + React-skeleton (чистий код) 
 
 import { ToastContainer } from 'react-toastify'; //! 01.Підлючення бібліотеки react-toastify
 // https://www.npmjs.com/package/react-toasti
@@ -63,10 +63,10 @@ export class AppHTTPRequestAdvanced extends Component {
           {/* <PokemonInfoAndErrorsStateMachine21 pokemonName={pokemonName} /> */}
 
           {/* //! HTTP-запит + Розмітка + Обробка помилок + State Machine + Рефакторинг + React-skeleton */}
-          <PokemonInfoAndErrorsStateMachine22 pokemonName={pokemonName} />
+          {/* <PokemonInfoAndErrorsStateMachine22 pokemonName={pokemonName} /> */}
 
           {/* //! HTTP-запит + Розмітка + Обробка помилок + State Machine + Рефакторинг + React-skeleton (чистий код) */}
-          {/* <PokemonInfoAndErrorsStateMachine23 pokemonName={pokemonName} /> */}
+          <PokemonInfoAndErrorsStateMachine23 pokemonName={pokemonName} />
           
           {/* //! 01.Підлючення бібліотеки react-toastify */}
           <ToastContainer autoClose={2000} /> 

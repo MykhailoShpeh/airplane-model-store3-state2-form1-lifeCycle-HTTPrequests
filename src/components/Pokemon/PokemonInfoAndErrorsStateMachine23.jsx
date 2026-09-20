@@ -1,15 +1,14 @@
 import { Component } from 'react';
 
-import { PokemonInfoViewСontainer } from "@/components/Pokemon/PokemonInfoViewСontainer.jsx"
+import { PokemonInfoViewСontainer } from './PokemonInfoViewСontainer.jsx';
+import { PokemonInfoViewPending } from './PokemonInfoViewPending.jsx';
+// import { PokemonInfoViewPendingLoaders } from './PokemonInfoViewPendingLoaders.jsx'; //! + бібліотеки з Loaders (спінерами)
+import { PokemonInfoViewError } from './PokemonInfoViewError.jsx';
+import { PokemonInfoViewData } from './PokemonInfoViewData.jsx';
+import pokemonAPI from '../../services/pokemon-api.js'
 
-import { PokemonInfoViewError } from "@/components/Pokemon/PokemonInfoViewError.jsx"
+// import css from "./PokemonInfo.module.css";
 
-import { PokemonInfoViewData } from "@/components/Pokemon/PokemonInfoViewData"
-
-import {PokemonInfoViewPending} from '@/components/Pokemon/PokemonInfoViewPending.jsx'
-
-
-import css from "./PokemonInfo.module.css";
 
 //? Застосуємо такі статуси:
 //?     - idle - запиту ще немає, нічого не відбувається
@@ -23,7 +22,7 @@ import css from "./PokemonInfo.module.css";
 //*     - Зрозуміліші умови рендеру розмітки.
 
 
-export class PokemonInfoAndErrorsStateMachine22 extends Component {
+export class PokemonInfoAndErrorsStateMachine23 extends Component {
   state = {
     pokemon: null, //! об'єкт з даними про покемона
     error: null, //! обробка помилок
@@ -39,29 +38,29 @@ export class PokemonInfoAndErrorsStateMachine22 extends Component {
       console.log("⏮️prevName (prevProps.pokemonName): ", prevProps.pokemonName);
       console.log("⏭️nextName (this.props.pokemonName): ", this.props.pokemonName);
 
-      this.setState({ status: 'pending' }); //! статус
+      this.setState({
+        pokemon: null, //! прибираємо попереднього покемона при завантаженні наступного
+        error: null, //! прибираємо можливу попередню помилку
+        status: 'pending' //! статус: pending - пішов запит
+      });
 
       //! Робимо HTTP-запит:
       setTimeout(() => { //! імітуємо час завантаження даних
-        fetch(`https://pokeapi.co/api/v2/pokemon/${nextName}`)
-          .then(response => {
-            if (response.ok) {
-              return response.json()
-            };
-            return Promise.reject(new Error(`Покемена з ім'ям «${nextName}» не існує`))
-          })
+        pokemonAPI
+          .fetchPokemon(nextName)
           .then(pokemon =>
             this.setState({
               pokemon,
-              status: 'resolved', //! статус 
+              error: null, //! прибираємо можливу попередню помилку
+              status: 'resolved' //! статус: resolved - УСПІШНА відповідь на запит
             }))
-          //todo: Обробка помилок
           .catch(error =>
             this.setState({
+              pokemon: null, //! прибираємо попереднього покемона якщо відповідь з ПОМИЛКОЮ
               error,
-              status: 'rejected', //! статус 
+              status: 'rejected' //! статус: rejected - відповідь на запит з ПОМИЛКОЮ
             }));
-      }, 5000);
+      }, 3000);
     };
   };
 
@@ -84,20 +83,10 @@ export class PokemonInfoAndErrorsStateMachine22 extends Component {
     console.log("ℹ️❓ Статус:", status);
     console.log("----------------------------------------------");
 
-    //? Застосуємо такі статуси:
-    //?     - idle - запиту ще немає, нічого не відбувається
-    //?     - pending - пішов запит
-    //?     - rejected - відповідь на запит з помилкою
-    //?     - resolved - успішна відповідь на запит
-
     //? idle - запиту ще немає, нічого не відбувається
     if (status === 'idle') {
       return (
-        // <div className={css.pokemonInfo}>
-        // <h1>Pokemon Info</h1>
-        // <h2><i>Введіть ім'я покемона</i></h2>
-        // </div>
-        <PokemonInfoViewСontainer title={"Pokemon Info"}>
+        <PokemonInfoViewСontainer title="Pokemon Info">
           <h2><i>Введіть ім'я покемона</i></h2>
         </PokemonInfoViewСontainer>
       );
@@ -106,16 +95,10 @@ export class PokemonInfoAndErrorsStateMachine22 extends Component {
     //? pending - пішов запит
     if (status === 'pending') {
       return (
-        // <div className={css.pokemonInfo}>
-        //   <h1>Pokemon Info</h1>
-        // <h2><u><i>Ви ввели ім'я покемона</i></u>: <b>{pokemonName}</b></h2>
-        // <h2 className={css.pokemonInfoLoading}>Завантажуємо покемон...</h2>
-        // </div>
-
-        <PokemonInfoViewСontainer title={"Pokemon Info"}>
-          {/* <h2><u><i>Ви ввели ім'я покемона</i></u>: <b>{pokemonName}</b></h2>
-          <h2 className={css.pokemonInfoLoading}>Завантажуємо покемон...</h2> */}
-          <PokemonInfoViewPending pokemonName={pokemonName}/>
+        <PokemonInfoViewСontainer title="Pokemon Info">
+          <PokemonInfoViewPending pokemonName={pokemonName} />
+          {/* //! + Бібліотеки з Loaders (спінерами) */}
+          {/* <PokemonInfoViewPendingLoaders pokemonName={pokemonName} /> */}
         </PokemonInfoViewСontainer>
       );
     };
@@ -123,34 +106,18 @@ export class PokemonInfoAndErrorsStateMachine22 extends Component {
     //? rejected - відповідь на запит з помилкою
     if (status === 'rejected') {
       return (
-        // <div className={css.pokemonInfo}>
-        //   <h1>Pokemon Info</h1>
-        // <h2 className={css.pokemonInfoTitleError}>{error.message}</h2>
-        // </div>
-
-        <PokemonInfoViewСontainer title={"Pokemon Info"}>
-          <PokemonInfoViewError errorMessage={error.message}/>
+        <PokemonInfoViewСontainer title="Pokemon Info">
+          <PokemonInfoViewError errorMessage={error.message} />
         </PokemonInfoViewСontainer>
       );
     };
 
+
     //? resolved - успішна відповідь на запит
     if (status === 'resolved') {
       return (
-        // <div className={css.pokemonInfo}>
-        // <h1>Pokemon Info</h1>
-        // <div className={css.pokemonContainer}>
-        //   <p className={css.pokemonName}><u><i>Покемон</i></u>: <b>{pokemon.name}</b></p>
-        //   <img
-        //     src={pokemon.sprites.other['official-artwork'].front_default} //todo: var.3
-        //     width="300"
-        //     alt={pokemon.name}
-        //   />
-        // </div>
-        // </div>
-
-        <PokemonInfoViewСontainer title={"Pokemon Info"}>
-          <PokemonInfoViewData pokemon={pokemon}/>
+        <PokemonInfoViewСontainer title="Pokemon Info">
+          <PokemonInfoViewData pokemon={pokemon} />
         </PokemonInfoViewСontainer>
       );
     };
