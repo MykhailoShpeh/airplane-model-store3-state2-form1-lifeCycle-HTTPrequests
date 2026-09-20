@@ -6,6 +6,8 @@ import { PokemonInfoViewError } from "@/components/Pokemon/PokemonInfoViewError.
 
 import { PokemonInfoViewData } from "@/components/Pokemon/PokemonInfoViewData"
 
+import {PokemonInfoViewPending} from '@/components/Pokemon/PokemonInfoViewPending.jsx'
+
 
 import css from "./PokemonInfo.module.css";
 
@@ -111,8 +113,9 @@ export class PokemonInfoAndErrorsStateMachine22 extends Component {
         // </div>
 
         <PokemonInfoViewСontainer title={"Pokemon Info"}>
-          <h2><u><i>Ви ввели ім'я покемона</i></u>: <b>{pokemonName}</b></h2>
-          <h2 className={css.pokemonInfoLoading}>Завантажуємо покемон...</h2>
+          {/* <h2><u><i>Ви ввели ім'я покемона</i></u>: <b>{pokemonName}</b></h2>
+          <h2 className={css.pokemonInfoLoading}>Завантажуємо покемон...</h2> */}
+          <PokemonInfoViewPending pokemonName={pokemonName}/>
         </PokemonInfoViewСontainer>
       );
     };
