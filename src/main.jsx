@@ -24,7 +24,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     {/* <BrowserRouter basename="/airplane-model-store3-state2-form1-lifeCycle-HTTPrequests"> */}
     <BrowserRouter basename="/airplane-model-store3-state2-form1-lifeCycle-HTTPrequests">
-      {/* <App /> */}
+      <App />
       {/* <AppColorBox />  */}
       {/* <AppSearchDebounce /> */}
       {/* <AppSearchDebounceTextBacklight /> */}
@@ -34,7 +34,7 @@ createRoot(document.getElementById('root')).render(
       {/* <AppComplexForms /> */}
       {/* //! HTTPRequest */}
         {/* <AppHTTPRequestBasics /> */}
-        <AppHTTPRequestAdvanced />
+        {/* <AppHTTPRequestAdvanced /> */}
 
     </BrowserRouter>
   </StrictMode >

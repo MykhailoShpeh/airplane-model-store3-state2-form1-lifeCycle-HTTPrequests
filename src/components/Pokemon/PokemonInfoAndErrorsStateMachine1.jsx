@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import css from './Pokemoninfo.module.css';
+import css from './PokemonInfo.module.css';
 
 //? Застосуємо такі статуси:
 //?     - idle - запиту ще немає, нічого не відбувається
