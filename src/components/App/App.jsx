@@ -16,6 +16,9 @@ import { FormChoiceRegistrationOrIdentification } from '@/components/FormChoiceR
 import { RegistrationIdentification } from '@/components/RegistrationIdentification/RegistrationIdentification.jsx';
 import debounce from "lodash.debounce";
 import { number } from 'prop-types';
+
+import aircraftsApi from '@/services/aircrafts-api.js';
+
 // import { updateSelectedModels } from '@/utils/';
 //! Приклад початкового сортування на ім'я (за полем name.brief)
 aircrafts.sort((firstModel, secondModel) => firstModel.name.brief.localeCompare(secondModel.name.brief));
@@ -36,6 +39,14 @@ aircrafts.length = 0;
 aircrafts.push(...arrayYes, ...arrayNo)
 
 console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+//* ***** План переходу с localStorage на HTTP-запити с json-server *****
+//?
+//? 1. Перший Render (змінюємо деякі початкові значення State):
+//? 2. componentDidMount():
+//? 2.1. Робимо HTTP-запит на json-server: "http://localhost:3000/usersAircrafts" ==> [users] та оновлюємо State:
+
+
 
 // export function App() {
 export class App extends Component {
@@ -66,6 +77,7 @@ export class App extends Component {
     showModal: true,
     modalType: "",  //! 🧾 індикатор типу модального вікна
     users: JSON.parse(localStorage.getItem("users")) || [],
+    usersTest: [],
     activeUser: null, //! 🗣 активний (авторизований) користувач
     activeUserId: null, //! #️⃣🗣 індекс Активного (авторизованого) користувача
     modelScale: 'all'
@@ -113,6 +125,15 @@ export class App extends Component {
       activeUserId,
       showModal: activeUser ? false : true
     })
+
+    setTimeout(() => {
+      aircraftsApi
+        .fetchUsersAircrafts()
+        .then(users =>
+          this.setState({
+            usersTest: users
+          }))
+    }, 2000)
 
   };
 
@@ -642,7 +663,7 @@ export class App extends Component {
 
       modalType: 'Login',
 
-       //! Логіка скидання всіх форм та інпутів при зміни стану користувача
+      //! Логіка скидання всіх форм та інпутів при зміни стану користувача
 
       bgColor: 'black',
       aircraftTitle: "Магазин моделей літальних апаратів",
@@ -655,7 +676,7 @@ export class App extends Component {
       modelsSelectedScale: aircrafts,
     }))
 
-     //! прокрутити сторінку вгору
+    //! прокрутити сторінку вгору
     window.scrollTo({
       top: 0,
       left: 0,
@@ -753,7 +774,7 @@ export class App extends Component {
       indicesSelectedModels: JSON.parse(localStorage.getItem("selectedModelsId")) || [], //! масив індексів обраних моделей
       // selectedModelsArrAfterFiltration: (JSON.parse(localStorage.getItem("selectedModelsId")) || []).flatMap((item) => aircrafts.filter((el) => item === el.id)), //! дубльоване значення selectedModels після фільтрації
 
-       //! Логіка скидання всіх форм та інпутів при зміни стану користувача
+      //! Логіка скидання всіх форм та інпутів при зміни стану користувача
 
       bgColor: 'black',
       aircraftTitle: "Магазин моделей літальних апаратів",
@@ -766,7 +787,7 @@ export class App extends Component {
       modelsSelectedScale: aircrafts,
     })
 
-     //! прокрутити сторінку вгору
+    //! прокрутити сторінку вгору
     window.scrollTo({
       top: 0,
       left: 0,
@@ -794,6 +815,7 @@ export class App extends Component {
       showModal,
       modalType,
       users,
+      usersTest,
       activeUser,
       activeUserId,
       modelScale
@@ -832,6 +854,7 @@ export class App extends Component {
     console.log("showModal: ", showModal);
     console.log("modalType: ", modalType);
     console.log("users: ", users);
+    console.log("🧪usersTest: ", usersTest);
     console.log("🗣 Активний (авторизований) користувач:", activeUser);
     console.log("#️⃣🗣 Індекс Активного(авторизованого) користувача", activeUserId);
     console.log("------------------------------------------------------------");
