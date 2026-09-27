@@ -79,7 +79,8 @@ export class App extends Component {
     users: JSON.parse(localStorage.getItem("users")) || [],
     usersTest: [],
     activeUser: null, //! 🗣 активний (авторизований) користувач
-    activeUserId: null, //! #️⃣🗣 індекс Активного (авторизованого) користувача
+    // activeUserId: null, //! #️⃣🗣 індекс Активного (авторизованого) користувача
+    activeUserId: (JSON.parse(localStorage.getItem("activeUserId")) || null), //? #️⃣🗣 індекс Активного (авторизованого) користувача
     modelScale: 'all'
   }
 
