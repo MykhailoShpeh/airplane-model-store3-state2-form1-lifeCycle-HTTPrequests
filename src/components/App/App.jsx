@@ -141,44 +141,44 @@ export class App extends Component {
   //! 3.localStorage - Оновлення(синхронізація) localStorage при кожній зміні indicesSelectedModels
   componentDidUpdate(prevProps, prevState) {
     //! Відслідковуємо зміну властивості indicesSelectedModels
-    if (this.state.activeUser && (prevState.indicesSelectedModels !== this.state.indicesSelectedModels)) {
-      localStorage.setItem(
-        "selectedModelsId",
-        JSON.stringify(this.state.indicesSelectedModels)
-      );
+    // if (this.state.activeUser && (prevState.indicesSelectedModels !== this.state.indicesSelectedModels)) {
+    //   localStorage.setItem(
+    //     "selectedModelsId",
+    //     JSON.stringify(this.state.indicesSelectedModels)
+    //   );
 
-      //todo змінити state та localstorage активного користувача, а саме властивість user.indicesSelectedModels
-      const users = JSON.parse(localStorage.getItem("users"))
+    //   //todo змінити state та localstorage активного користувача, а саме властивість user.indicesSelectedModels
+    //   const users = JSON.parse(localStorage.getItem("users"))
 
-      users[this.state.activeUserId].indicesSelectedModels = this.state.indicesSelectedModels
+    //   users[this.state.activeUserId].indicesSelectedModels = this.state.indicesSelectedModels
 
-      console.log("users - local: ", users)
+    //   console.log("users - local: ", users)
 
-      localStorage.setItem(
-        "users",
-        JSON.stringify(users)
-      );
+    //   localStorage.setItem(
+    //     "users",
+    //     JSON.stringify(users)
+    //   );
 
-      this.setState({
-        users,
-        activeUser: users[this.state.activeUserId]
-      })
-    }
+    //   this.setState({
+    //     users,
+    //     activeUser: users[this.state.activeUserId]
+    //   })
+    // }
     //! Відслідковуємо зміну властивості users
-    if (prevState.users !== this.state.users) {
-      console.log("Властивість users змінилася")
-      localStorage.setItem(
-        "users",
-        JSON.stringify(this.state.users)
-      );
+    // if (prevState.users !== this.state.users) {
+    //   console.log("Властивість users змінилася")
+    //   localStorage.setItem(
+    //     "users",
+    //     JSON.stringify(this.state.users)
+    //   );
 
-      //! перенесено в метод signOut
-      this.setState({
-        //   selectedModels: (JSON.parse(localStorage.getItem("selectedModelsId")) || []).flatMap((item) => aircrafts.filter((el) => item === el.id)),
-        //   indicesSelectedModels: JSON.parse(localStorage.getItem("selectedModelsId")) || [], //! масив індексів обраних моделей
-        selectedModelsArrAfterFiltration: (JSON.parse(localStorage.getItem("selectedModelsId")) || []).flatMap((item) => aircrafts.filter((el) => item === el.id)), //! дубльоване значення selectedModels після фільтрації
-      })
-    }
+    //   //! перенесено в метод signOut
+    //   this.setState({
+    //     //   selectedModels: (JSON.parse(localStorage.getItem("selectedModelsId")) || []).flatMap((item) => aircrafts.filter((el) => item === el.id)),
+    //     //   indicesSelectedModels: JSON.parse(localStorage.getItem("selectedModelsId")) || [], //! масив індексів обраних моделей
+    //     selectedModelsArrAfterFiltration: (JSON.parse(localStorage.getItem("selectedModelsId")) || []).flatMap((item) => aircrafts.filter((el) => item === el.id)), //! дубльоване значення selectedModels після фільтрації
+    //   })
+    // }
   };
 
   allFiltration = () => {
@@ -685,36 +685,38 @@ export class App extends Component {
     });
   }
 
-  accountLogin = (user) => {
-    console.log("🧑‍⚕️user: ", user)
-
-    console.log("🙆‍♂️Вхід в обліковий запис:", user.userEmail); //
-    //! 1. Забираємо users з localStorage
-    const users = JSON.parse(localStorage.getItem('users'));
+  accountLogin = (userEmail, users) => {
+    console.log("🧑‍⚕️userEmail: ", userEmail)
     console.log("users: ", users)
-    const activeUser = users.find(item => item.userEmail === user.userEmail)
+    // console.log("🙆‍♂️Вхід в обліковий запис:", user.userEmail); //
+    //! 1. Забираємо users з localStorage
+    //? const users = JSON.parse(localStorage.getItem('users'));
+    //? console.log("users: ", users)
+    const activeUser = users.find(item => item.userEmail === userEmail)
     console.log("❗️🗣 Активний (авторизований) користувач__accountLogin:", activeUser); //!
 
-    activeUser.isActive = true
+    //? activeUser.isActive = true
 
-    const activeUserId = users.findIndex(user => user.isActive === true)
+    //? const activeUserId = users.findIndex(user => user.isActive === true)
+
+    const activeUserId = activeUser.id
 
     const selectedModelsId = activeUser.indicesSelectedModels
 
-    console.log("selectedModelsId: ", selectedModelsId)
+     console.log("selectedModelsId: ", selectedModelsId)
 
-    localStorage.setItem(
-      "users",
-      JSON.stringify(users),
-    );
+    // localStorage.setItem(
+    //   "users",
+    //   JSON.stringify(users),
+    // );
 
-    localStorage.setItem(
-      "selectedModelsId",
-      JSON.stringify(selectedModelsId)
+    // localStorage.setItem(
+    //   "selectedModelsId",
+    //   JSON.stringify(selectedModelsId)
 
-    )
+    // )
 
-    console.log("users after: ", users)
+    // console.log("users after: ", users)
     //todo var.1
     // this.setState({
     //   showModal: false
@@ -727,7 +729,8 @@ export class App extends Component {
       activeUser,
       activeUserId,
       indicesSelectedModels: selectedModelsId,
-      selectedModels: (JSON.parse(localStorage.getItem("selectedModelsId")) || []).flatMap((item) => aircrafts.filter((el) => item === el.id)),
+      // selectedModels: (JSON.parse(localStorage.getItem("selectedModelsId")) || []).flatMap((item) => aircrafts.filter((el) => item === el.id)),
+      selectedModels: selectedModelsId.flatMap((item) => aircrafts.filter((el) => item === el.id)).sort((a, b) => a.name.brief.localeCompare(b.name.brief)), //? масив обраних моделей,
 
       //! Логіка скидання всіх форм та інпутів при зміни стану користувача
 

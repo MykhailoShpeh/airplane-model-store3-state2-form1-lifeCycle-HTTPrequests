@@ -60,7 +60,7 @@ export class FormIdentification extends Component {
         }
         alert(`Вітаю Вас, ${user.userName} 😊 \nІдентифікація/Аутентифікація пройдена ✅`);
 
-        // this.props.onAccountLogin({ ...this.state });
+        this.props.onAccountLogin( userEmail, users );
         //! очищуємо поля всіх інпутів
         this.reset()
 
