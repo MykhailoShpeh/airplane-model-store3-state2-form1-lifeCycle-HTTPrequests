@@ -76,8 +76,8 @@ export class App extends Component {
 
     showModal: true,
     modalType: "",  //! 🧾 індикатор типу модального вікна
-    users: JSON.parse(localStorage.getItem("users")) || [],
-    usersTest: [],
+    // users: JSON.parse(localStorage.getItem("users")) || [],
+    users: [],
     activeUser: null, //! 🗣 активний (авторизований) користувач
     // activeUserId: null, //! #️⃣🗣 індекс Активного (авторизованого) користувача
     activeUserId: (JSON.parse(localStorage.getItem("activeUserId")) || null), //? #️⃣🗣 індекс Активного (авторизованого) користувача
@@ -96,35 +96,35 @@ export class App extends Component {
     //   localStorage.setItem("users", JSON.stringify([]));
     // }
 
-    let users = JSON.parse(localStorage.getItem("users"))
+    // let users = JSON.parse(localStorage.getItem("users"))
 
-    let activeUser = null;
+    // let activeUser = null;
 
-    if (!users) {
-      users = []
-      localStorage.setItem("users", JSON.stringify([]));
-    } else if (users.length > 0) {
-      activeUser = users.find(user => user.isActive === true) === undefined
-        ? null
-        : JSON.parse(localStorage.getItem("users")).find(user => user.isActive === true);
-    }
+    // if (!users) {
+    //   users = []
+    //   localStorage.setItem("users", JSON.stringify([]));
+    // } else if (users.length > 0) {
+    //   activeUser = users.find(user => user.isActive === true) === undefined
+    //     ? null
+    //     : JSON.parse(localStorage.getItem("users")).find(user => user.isActive === true);
+    // }
 
     //todo якщо users відсутні, то localstorage поверне null,
     //todo якщо є, (масив users не пустий), то localstorage поверне users
     //todo якщо є, (масив users пустий), то localstorage поверне пустий масив []
 
-    console.log("activeUser: ", activeUser)
+    // console.log("activeUser: ", activeUser)
 
-    const activeUserId = users.findIndex(user => user.isActive === true) === -1
-      ? null
-      : users.findIndex(user => user.isActive === true)
+    // const activeUserId = users.findIndex(user => user.isActive === true) === -1
+    //   ? null
+    //   : users.findIndex(user => user.isActive === true)
 
-    console.log("activeUserId: ", activeUserId)
+    // console.log("activeUserId: ", activeUserId)
 
     this.setState({
-      activeUser,
-      activeUserId,
-      showModal: activeUser ? false : true
+      // activeUser,
+      // activeUserId,
+      showModal: this.state.activeUser ? false : true
     })
 
     setTimeout(() => {
@@ -132,7 +132,7 @@ export class App extends Component {
         .fetchUsersAircrafts()
         .then(users =>
           this.setState({
-            usersTest: users
+            users
           }))
     }, 2000)
 

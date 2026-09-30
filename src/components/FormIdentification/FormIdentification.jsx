@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import aircraftsApi from '@/services/aircrafts-api.js';
+
 import css from './FormIdentification.module.css'
 
 const INITIAL_STATE = {
@@ -18,15 +20,27 @@ export class FormIdentification extends Component {
         this.setState({ ...INITIAL_STATE });
     };
 
-    handleSubmit = event => {
+    //? Метод для отримання масиву користувачів users з json-server: "http://localhost:3000/usersAircrafts"
+    loadInitialDataUsers = async (fetchData) => {
+        try {
+            return fetchData()
+        } catch (error) {
+            console.log("❌", error);
+        };
+    };
+
+
+
+    handleSubmit = async (event) => {//? робимо метод асинхронним
         event.preventDefault();
         console.log("Підтвердження форми");
         const { userEmail, userPassword } = this.state;
         console.log(`Login: ${userEmail}, Password: ${userPassword}`);
         //! Перевірка на наявність userEmail (Ідентифікація)
         //! 1. Забираємо users з localStorage
-        const users = JSON.parse(localStorage.getItem('users'));
-        console.log("users: ", users)
+        //? const users = JSON.parse(localStorage.getItem('users'));
+        const users = await this.loadInitialDataUsers(aircraftsApi.fetchUsersAircrafts); //? завантажуємо "свіженких" users з json-server: "http://localhost:3000/usersAircrafts"
+         console.log("users: ", users)
         //! 2. Створюємо змінну, яка дасть відповідь чи є цей користувач
         const isEmail = users.some(user => user.userEmail === userEmail)
         console.log("📩Такий Email є в db?:", isEmail);
@@ -46,7 +60,7 @@ export class FormIdentification extends Component {
         }
         alert(`Вітаю Вас, ${user.userName} 😊 \nІдентифікація/Аутентифікація пройдена ✅`);
 
-        this.props.onAccountLogin({ ...this.state });
+        // this.props.onAccountLogin({ ...this.state });
         //! очищуємо поля всіх інпутів
         this.reset()
 
