@@ -86,6 +86,14 @@ export class App extends Component {
     modelScale: 'all'
   }
 
+  loadData = async (fetchData) => {
+    try {
+      return fetchData()
+    } catch (error) {
+      console.log("❌", error);
+    };
+  };
+
   //! 2.localStorage - Створення запису в localStorage під час першого запуску якщо його немає
   componentDidMount() {
     // const saved = localStorage.getItem("selectedModelsId");
@@ -129,13 +137,20 @@ export class App extends Component {
       showModal: this.state.activeUser ? false : true
     })
 
-    setTimeout(() => {
-      fetchUsersAircrafts()
-        .then(users =>
-          this.setState({
-            users
-          }))
-    }, 2000)
+    // setTimeout(() => {
+    //   fetchUsersAircrafts()
+    //     .then(users =>
+    //       this.setState({
+    //         users
+    //       }))
+    // }, 2000)
+
+    this.loadData(fetchUsersAircrafts)
+    .then(users =>
+      this.setState({
+        users
+      }))
+
 
   };
 
@@ -166,20 +181,25 @@ export class App extends Component {
     //   })
     // }
     //! Відслідковуємо зміну властивості users
-    // if (prevState.users !== this.state.users) {
-    //   console.log("Властивість users змінилася")
-    //   localStorage.setItem(
-    //     "users",
-    //     JSON.stringify(this.state.users)
-    //   );
+    if (prevState.users !== this.state.users) {
+      console.log("Властивість users змінилася")
+      //   localStorage.setItem(
+      //     "users",
+      //     JSON.stringify(this.state.users)
+      // );
 
-    //   //! перенесено в метод signOut
-    //   this.setState({
-    //     //   selectedModels: (JSON.parse(localStorage.getItem("selectedModelsId")) || []).flatMap((item) => aircrafts.filter((el) => item === el.id)),
-    //     //   indicesSelectedModels: JSON.parse(localStorage.getItem("selectedModelsId")) || [], //! масив індексів обраних моделей
-    //     selectedModelsArrAfterFiltration: (JSON.parse(localStorage.getItem("selectedModelsId")) || []).flatMap((item) => aircrafts.filter((el) => item === el.id)), //! дубльоване значення selectedModels після фільтрації
-    //   })
-    // }
+      this.loadData(fetchUsersAircrafts).then(users =>
+        console.log("✅ users didUpdate: ", users)
+      )
+
+      // console.log("✅ users didUpdate: ", users)
+      //   //! перенесено в метод signOut
+      //   this.setState({
+      //     //   selectedModels: (JSON.parse(localStorage.getItem("selectedModelsId")) || []).flatMap((item) => aircrafts.filter((el) => item === el.id)),
+      //     //   indicesSelectedModels: JSON.parse(localStorage.getItem("selectedModelsId")) || [], //! масив індексів обраних моделей
+      //     selectedModelsArrAfterFiltration: (JSON.parse(localStorage.getItem("selectedModelsId")) || []).flatMap((item) => aircrafts.filter((el) => item === el.id)), //! дубльоване значення selectedModels після фільтрації
+      //   })
+    }
   };
 
   allFiltration = () => {
@@ -660,6 +680,9 @@ export class App extends Component {
 
   submitFormRegistration = (user) => {
     console.log("🧑‍⚕️user: ", user)
+
+
+
     this.setState(prevState => ({
       users: [...prevState.users, user],
 
