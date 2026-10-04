@@ -22,14 +22,16 @@ export class FormIdentification extends Component {
         this.setState({ ...INITIAL_STATE });
     };
 
-    //? Метод для отримання масиву користувачів users з json-server: "http://localhost:3000/usersAircrafts"
-    loadInitialDataUsers = async (fetchData) => {
+    //? Метод-обгортка для отримання даних за допомогою колбек функції fetchData
+    //? Метод отримуєння масив користувачів users з json-server: "http://localhost:3000/usersAircrafts"
+    loadData = async (fetchData) => {
         try {
             return fetchData()
         } catch (error) {
             console.log("❌", error);
         };
     };
+
 
 
 
@@ -41,7 +43,7 @@ export class FormIdentification extends Component {
         //! Перевірка на наявність userEmail (Ідентифікація)
         //! 1. Забираємо users з localStorage
         //? const users = JSON.parse(localStorage.getItem('users'));
-        const users = await this.loadInitialDataUsers(fetchUsersAircrafts); //? завантажуємо "свіженких" users з json-server: "http://localhost:3000/usersAircrafts"
+        const users = await this.loadData(fetchUsersAircrafts); //? завантажуємо "свіженких" users з json-server: "http://localhost:3000/usersAircrafts"
         console.log("users: ", users)
         //! 2. Створюємо змінну, яка дасть відповідь чи є цей користувач
         const isEmail = users.some(user => user.userEmail === userEmail)

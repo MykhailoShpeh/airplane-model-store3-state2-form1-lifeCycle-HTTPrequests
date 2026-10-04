@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import { fetchUsersAircrafts } from '@/services'
+
 import css from './FormRegistration.module.css'
 
 const INITIAL_STATE = {
@@ -25,12 +27,22 @@ export class FormRegistration extends Component {
         this.setState({ ...INITIAL_STATE });
     };
 
-    handleSubmit = event => {
+    //? Метод-обгортка для отримання даних за допомогою колбек функції fetchData
+    //? Метод отримуєння масив користувачів users з json-server: "http://localhost:3000/usersAircrafts"
+    loadData = async (fetchData) => {
+        try {
+            return fetchData()
+        } catch (error) {
+            console.log("❌", error);
+        };
+    };
+
+    handleSubmit = async event => {
         event.preventDefault();
         console.log("Підтвердження форми");
         const { loginInputValue, passwordInputValue, userName, userEmail, userPassword, userExperience, userAge, isActive = false, indicesSelectedModels = [] } = this.state;
         console.log(`Login: ${loginInputValue}, Password: ${passwordInputValue}`);
-        
+
         //! Перевірка на унікальність userEmail
 
         //todo 1. створити змінну users, в яку стягуємо дані з бази даних про користувачів
@@ -38,7 +50,16 @@ export class FormRegistration extends Component {
         //todo та false, якщо такого userEmail немає в масиві об'єктів users (для цього потрібно перебрати масив users відповідним перебираючим методом масиву)
         //todo 3. вивести відповідне повідомлення (alert) користувачу, якщо такий email уже існує 
 
-        const users = []
+        const users = await this.loadData(fetchUsersAircrafts); //? завантажуємо "свіженких" users з json-server: "http://localhost:3000/usersAircrafts"
+        console.log("users: ", users)
+        //! 2. Створюємо змінну, яка дасть відповідь чи є цей користувач
+        const isEmailNotUnique = users.some(user => user.userEmail === userEmail)
+        console.log("📩Такий Email є в db?:", isEmailNotUnique);
+        if (isEmailNotUnique) {
+            alert(`Користувач з таким E-mail: ${userEmail} вже існує`);
+            console.log(`Користувач з таким E-mail: ${userEmail} вже існує`);
+            return
+        }
 
         // this.props.onSubmit({ ...this.state });
         this.props.onSubmit({
