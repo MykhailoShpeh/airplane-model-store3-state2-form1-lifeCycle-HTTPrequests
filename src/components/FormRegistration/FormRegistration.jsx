@@ -18,6 +18,8 @@ export class FormRegistration extends Component {
         ...INITIAL_STATE
     }
 
+
+
     //! Скидання state в початкове значення INITIAL_STATE
     reset = () => {
         this.setState({ ...INITIAL_STATE });
@@ -28,6 +30,16 @@ export class FormRegistration extends Component {
         console.log("Підтвердження форми");
         const { loginInputValue, passwordInputValue, userName, userEmail, userPassword, userExperience, userAge, isActive = false, indicesSelectedModels = [] } = this.state;
         console.log(`Login: ${loginInputValue}, Password: ${passwordInputValue}`);
+        
+        //! Перевірка на унікальність userEmail
+
+        //todo 1. створити змінну users, в яку стягуємо дані з бази даних про користувачів
+        //todo 2. створити змінну isEmaiNotlUnique, яка буде мати значення true або false, true, якщо такий userEmail є,
+        //todo та false, якщо такого userEmail немає в масиві об'єктів users (для цього потрібно перебрати масив users відповідним перебираючим методом масиву)
+        //todo 3. вивести відповідне повідомлення (alert) користувачу, якщо такий email уже існує 
+
+        const users = []
+
         // this.props.onSubmit({ ...this.state });
         this.props.onSubmit({
             userName,
@@ -152,7 +164,7 @@ export class FormRegistration extends Component {
                                 value="disciple"
                                 checked={userExperience === "disciple"}
                                 onChange={this.handleChange}
-                                
+
                             />
                         </label>
 
@@ -164,7 +176,7 @@ export class FormRegistration extends Component {
                                 value="master"
                                 checked={userExperience === "master"}
                                 onChange={this.handleChange}
-                                
+
                             />
                         </label>
 
@@ -222,7 +234,7 @@ export class FormRegistration extends Component {
                         </button>
                     </div>
                 </form>
-                </>
+            </>
         )
     }
 }

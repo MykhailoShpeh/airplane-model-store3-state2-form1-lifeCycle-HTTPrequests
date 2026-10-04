@@ -16,7 +16,7 @@ const ENDPOINT_USERS_AIRCRAFTS_TEST = "usersAircraftsTest"; //todo: тестов
 
 
 
-async function fetchUsersAircrafts() {
+export async function fetchUsersAircrafts() {
     const url = `${BASE_URL}${ENDPOINT_USERS_AIRCRAFTS_TEST}`; //todo: тестова DB для налаштування логіки запитів
 
     try {
@@ -29,8 +29,8 @@ async function fetchUsersAircrafts() {
     }
 }
 
-const api = {
-    fetchUsersAircrafts,
-};
+// const api = {
+//     fetchUsersAircrafts,
+// };
 
-export default api;
+// export default api;

@@ -17,7 +17,9 @@ import { RegistrationIdentification } from '@/components/RegistrationIdentificat
 import debounce from "lodash.debounce";
 import { number } from 'prop-types';
 
-import aircraftsApi from '@/services/aircrafts-api.js';
+// import aircraftsApi from '@/services/aircrafts-api.js';
+
+import { fetchUsersAircrafts } from '@/services'
 
 // import { updateSelectedModels } from '@/utils/';
 //! Приклад початкового сортування на ім'я (за полем name.brief)
@@ -128,8 +130,7 @@ export class App extends Component {
     })
 
     setTimeout(() => {
-      aircraftsApi
-        .fetchUsersAircrafts()
+      fetchUsersAircrafts()
         .then(users =>
           this.setState({
             users
@@ -703,7 +704,7 @@ export class App extends Component {
 
     const selectedModelsId = activeUser.indicesSelectedModels
 
-     console.log("selectedModelsId: ", selectedModelsId)
+    console.log("selectedModelsId: ", selectedModelsId)
 
     // localStorage.setItem(
     //   "users",

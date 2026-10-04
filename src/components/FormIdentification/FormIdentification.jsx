@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 
-import aircraftsApi from '@/services/aircrafts-api.js';
+// import aircraftsApi from '@/services/aircrafts-api.js';
+
+import { fetchUsersAircrafts } from '@/services'
 
 import css from './FormIdentification.module.css'
 
@@ -39,8 +41,8 @@ export class FormIdentification extends Component {
         //! Перевірка на наявність userEmail (Ідентифікація)
         //! 1. Забираємо users з localStorage
         //? const users = JSON.parse(localStorage.getItem('users'));
-        const users = await this.loadInitialDataUsers(aircraftsApi.fetchUsersAircrafts); //? завантажуємо "свіженких" users з json-server: "http://localhost:3000/usersAircrafts"
-         console.log("users: ", users)
+        const users = await this.loadInitialDataUsers(fetchUsersAircrafts); //? завантажуємо "свіженких" users з json-server: "http://localhost:3000/usersAircrafts"
+        console.log("users: ", users)
         //! 2. Створюємо змінну, яка дасть відповідь чи є цей користувач
         const isEmail = users.some(user => user.userEmail === userEmail)
         console.log("📩Такий Email є в db?:", isEmail);
@@ -60,7 +62,7 @@ export class FormIdentification extends Component {
         }
         alert(`Вітаю Вас, ${user.userName} 😊 \nІдентифікація/Аутентифікація пройдена ✅`);
 
-        this.props.onAccountLogin( userEmail, users );
+        this.props.onAccountLogin(userEmail, users);
         //! очищуємо поля всіх інпутів
         this.reset()
 
