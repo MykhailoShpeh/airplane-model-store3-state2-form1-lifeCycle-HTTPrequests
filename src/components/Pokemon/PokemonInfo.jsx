@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import css from './Pokemoninfo.module.css';
+import css from './PokemonInfo.module.css';
 
 export class PokemonInfo extends Component {
     state = {
