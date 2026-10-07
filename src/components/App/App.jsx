@@ -16,7 +16,7 @@ import { FormChoiceRegistrationOrIdentification } from '@/components/FormChoiceR
 import { RegistrationIdentification } from '@/components/RegistrationIdentification/RegistrationIdentification.jsx';
 import debounce from "lodash.debounce";
 import { number } from 'prop-types';
-
+import axios from 'axios';
 // import aircraftsApi from '@/services/aircrafts-api.js';
 
 import { fetchUsersAircrafts } from '@/services'
@@ -146,10 +146,10 @@ export class App extends Component {
     // }, 2000)
 
     this.loadData(fetchUsersAircrafts)
-    .then(users =>
-      this.setState({
-        users
-      }))
+      .then(users =>
+        this.setState({
+          users
+        }))
 
 
   };
@@ -190,7 +190,24 @@ export class App extends Component {
 
       this.loadData(fetchUsersAircrafts).then(users =>
         console.log("✅ users didUpdate: ", users)
+
       )
+
+      // const newUsers = this.state.users
+      // console.log("✅ newUsers: ", newUsers)
+
+      // axios.put('http://localhost:3000/usersAircrafts',{newUsers})
+
+      // axios.put(
+      //   "http://localhost:3000/usersAircraftsTest",
+      //   this.state.users
+      // )
+      //   .then(response => {
+      //     console.log("✅ users успішно записані:", response.data);
+      //   })
+      //   .catch(error => {
+      //     console.log("❌ Помилка запису users:", error);
+      //   });
 
       // console.log("✅ users didUpdate: ", users)
       //   //! перенесено в метод signOut
@@ -678,14 +695,36 @@ export class App extends Component {
 
   }
 
-  submitFormRegistration = (user) => {
-    console.log("🧑‍⚕️user: ", user)
+  submitFormRegistration = async (newUser) => {
+    console.log("🧑‍⚕️user: ", newUser)
 
+    // this.loadData(fetchUsersAircrafts).then(users =>
+    //   console.log("✅ users submitFormRegistration: ", users)
+
+    // )
+
+    //? NEW 
+    try {
+      //? Додаємо нового користувача в db "usersAircrafts" на json-server
+      await axios.post("http://localhost:3000/usersAircraftsTest", newUser);
+      //? Отримуємо оновлений список користувачів з db "usersAircrafts" на json-server
+      const response = await axios.get("http://localhost:3000/usersAircraftsTest")
+      console.log("✅ response.data: ", response.data)
+
+      //? Оновлюємо список користувачів users в State
+      this.setState({
+        users: response.data,
+      });
+
+
+    } catch (error) {
+      console.log('❌ Помилка запита users "http://localhost:3000/usersAircrafts":', error);
+    };
 
 
     this.setState(prevState => ({
-      users: [...prevState.users, user],
-
+      // users: [...prevState.users, newUser],
+      
       modalType: 'Login',
 
       //! Логіка скидання всіх форм та інпутів при зміни стану користувача
