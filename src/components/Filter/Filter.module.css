@@ -1,9 +1,9 @@
 /*! Filter */
 .filterBox {
     width: 100%;
-    /* position: fixed; */
-    /* top: 0;
-    z-index: 1; */
+    position: fixed;
+     top: 275px;
+     z-index: 1;
     display: flex;
     justify-content: space-evenly;
     border: 8px solid #719e7091;
