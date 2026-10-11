@@ -21,6 +21,8 @@ import axios from 'axios';
 
 import { fetchUsersAircrafts } from '@/services'
 
+import {generatesRandomNumber} from "@/utils";
+
 // import { updateSelectedModels } from '@/utils/';
 //! Приклад початкового сортування на ім'я (за полем name.brief)
 aircrafts.sort((firstModel, secondModel) => firstModel.name.brief.localeCompare(secondModel.name.brief));
@@ -711,6 +713,8 @@ export class App extends Component {
       const response = await axios.get("http://localhost:3000/usersAircraftsTest")
       console.log("✅ response.data: ", response.data)
 
+      
+
       //? Оновлюємо список користувачів users в State
       this.setState({
         users: response.data,
@@ -724,7 +728,7 @@ export class App extends Component {
 
     this.setState(prevState => ({
       // users: [...prevState.users, newUser],
-      
+
       modalType: 'Login',
 
       //! Логіка скидання всіх форм та інпутів при зміни стану користувача
@@ -928,6 +932,7 @@ export class App extends Component {
 
     this.test('Виклик тестової функції')
 
+    // console.log("Виклик функціїї з рандомним числом: ", generatesRandomNumber(1, 1025));
 
     return (
       <>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { fetchUsersAircrafts } from '@/services'
+import { fetchUsersAircrafts, fetchPokemon } from '@/services'
 
 import css from './FormRegistration.module.css'
 
@@ -61,6 +61,19 @@ export class FormRegistration extends Component {
             return
         }
 
+        //? Створюємо значення додаткових властивостей userAvatar і userNickName
+
+        const pokemon = await this.loadData(fetchPokemon);
+
+        const userNickName = pokemon.name;
+
+        // const userAvatar = pokemon.sprites.front_default; //todo: var.1
+        // const userAvatar = pokemon.sprites.other.home?.front_default; //todo: var.2
+        const userAvatar = pokemon.sprites.other['official-artwork'].front_default; //todo: var.3
+
+
+        console.log("❗️{🐷} Покемон-об'єкт:", pokemon);
+
         // this.props.onSubmit({ ...this.state });
         this.props.onSubmit({
             userName,
@@ -68,8 +81,9 @@ export class FormRegistration extends Component {
             userPassword,
             userExperience,
             userAge,
-            isActive,
-            indicesSelectedModels
+            userNickName,
+            userAvatar,
+            indicesSelectedModels,
         });
         //! очищуємо поля всіх інпутів
         this.reset()
