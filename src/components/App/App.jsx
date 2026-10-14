@@ -152,7 +152,8 @@ export class App extends Component {
         this.setState({
           users,
            activeUser: users.find(item => item.id === this.state.activeUserId),
-           showModal: this.state.activeUser ? false : true
+           showModal: this.state.activeUser ? false : true,
+           indicesSelectedModels: users.find(item => item.id === this.state.activeUserId).indicesSelectedModels
         }))
 
 
