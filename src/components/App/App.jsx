@@ -133,11 +133,11 @@ export class App extends Component {
 
     // console.log("activeUserId: ", activeUserId)
 
-    this.setState({
-      // activeUser,
-      // activeUserId,
-      showModal: this.state.activeUser ? false : true
-    })
+    // this.setState({
+    //   activeUser: this.state.users.find(item => item.id === this.state.activeUserId),
+    //   // activeUserId,
+    //   showModal: this.state.activeUser ? false : true
+    // })
 
     // setTimeout(() => {
     //   fetchUsersAircrafts()
@@ -150,7 +150,9 @@ export class App extends Component {
     this.loadData(fetchUsersAircrafts)
       .then(users =>
         this.setState({
-          users
+          users,
+           activeUser: users.find(item => item.id === this.state.activeUserId),
+           showModal: this.state.activeUser ? false : true
         }))
 
 
