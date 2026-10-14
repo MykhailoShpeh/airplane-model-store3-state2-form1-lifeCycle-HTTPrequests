@@ -762,6 +762,11 @@ export class App extends Component {
     const activeUser = users.find(item => item.userEmail === userEmail)
     console.log("❗️🗣 Активний (авторизований) користувач__accountLogin:", activeUser); //!
 
+    localStorage.setItem(
+      "activeUserId",
+      JSON.stringify(activeUser.id),
+    );
+
     //? activeUser.isActive = true
 
     //? const activeUserId = users.findIndex(user => user.isActive === true)
@@ -825,28 +830,28 @@ export class App extends Component {
   signOut = () => {
     console.log("⬇️Sign Out");
 
-    const users = JSON.parse(localStorage.getItem("users"))
+    // const users = JSON.parse(localStorage.getItem("users"))
 
-    console.log("users ДО: ", users);
+    // console.log("users ДО: ", users);
 
-    users[this.state.activeUserId].isActive = false
+    // users[this.state.activeUserId].isActive = false
 
-    console.log("users Після: ", users);
+    // console.log("users Після: ", users);
 
-    localStorage.removeItem("selectedModelsId");
+    // localStorage.removeItem("selectedModelsId");
+
+    localStorage.removeItem("activeUserId");
 
     this.setState({
-      users,
+      // users,
       activeUser: null,
       activeUserId: null,
       showModal: true,
       modalType: "",
-      selectedModels: (JSON.parse(localStorage.getItem("selectedModelsId")) || []).flatMap((item) => aircrafts.filter((el) => item === el.id)),
-      indicesSelectedModels: JSON.parse(localStorage.getItem("selectedModelsId")) || [], //! масив індексів обраних моделей
-      // selectedModelsArrAfterFiltration: (JSON.parse(localStorage.getItem("selectedModelsId")) || []).flatMap((item) => aircrafts.filter((el) => item === el.id)), //! дубльоване значення selectedModels після фільтрації
+      selectedModels: [],
+      indicesSelectedModels: [], //! масив індексів обраних моделей
 
       //! Логіка скидання всіх форм та інпутів при зміни стану користувача
-
       bgColor: 'black',
       aircraftTitle: "Магазин моделей літальних апаратів",
       aircraftArray: aircrafts,
