@@ -2,6 +2,8 @@ import React from "react";
 
 import css from './RegistrationIdentification.module.css'
 
+import template from "./template-profile.jpg"
+
 export function RegistrationIdentification({
     onClose,
     activeUser,
@@ -43,9 +45,17 @@ export function RegistrationIdentification({
                     <h2 className={css.titleRegistrationIdentification}>
                         Вітаю вас,
                         <span className={css.titleUserRegistrationIdentification}>
+                            &nbsp;
                             {activeUser.userName}
                         </span>
+
+                        {activeUser.userNickName &&
+                            
+                            <span className={css.pokemonName}>&nbsp;({activeUser.userNickName})</span>}
                     </h2>
+
+                    
+                    <img className={css.profilePicture} src={activeUser.userAvatar ? activeUser.userAvatar : template} alt="pfp"/>
 
                     <button
                         className={`${css.buttonRegistrationIdentification} ${css.buttonSignOut}`}

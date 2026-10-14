@@ -83,3 +83,12 @@
 .buttonRegistrationIdentification.buttonSignOut:hover {
     background-color: #b71c1c;
 }
+
+.pokemonName {
+    color: #d32f2f;
+    text-transform: capitalize;
+}
+
+.profilePicture {
+    width: 50px;
+}
