@@ -21,7 +21,7 @@ import axios from 'axios';
 
 import { fetchUsersAircrafts } from '@/services'
 
-import {generatesRandomNumber} from "@/utils";
+import { generatesRandomNumber } from "@/utils";
 
 // import { updateSelectedModels } from '@/utils/';
 //! Приклад початкового сортування на ім'я (за полем name.brief)
@@ -67,7 +67,8 @@ export class App extends Component {
     //! Візуалізація активної кнопки 
     activeButton: "allButton",
     // activeButtonIndex: null,
-    indicesSelectedModels: JSON.parse(localStorage.getItem("selectedModelsId")) || [], //! масив індексів обраних моделей
+    // indicesSelectedModels: JSON.parse(localStorage.getItem("selectedModelsId")) || [], //! масив індексів обраних моделей
+    indicesSelectedModels: [], //! масив індексів обраних моделей
     selectedModels: (JSON.parse(localStorage.getItem("selectedModelsId")) || []).flatMap((item) => aircrafts.filter((el) => item === el.id)), //! масив обраних моделей
     isCartButton: false, //! тригер: "якщо активна кнопка «Кошик»"
     // inputSearchValue: "", //! значення inputSearch
@@ -151,12 +152,15 @@ export class App extends Component {
       .then(users =>
         this.setState({
           users,
-           activeUser: users.find(item => item.id === this.state.activeUserId),
-           showModal: this.state.activeUser ? false : true,
-           indicesSelectedModels: users.find(item => item.id === this.state.activeUserId).indicesSelectedModels
+          activeUser: users.find(item => item.id === this.state.activeUserId),
+          showModal: this.state.activeUser ? false : true,
+          indicesSelectedModels: this.state.activeUser ? users.find(item => item.id === this.state.activeUserId).indicesSelectedModels : [],
+          selectedModels: this.state.activeUser ? users.find(item => item.id === this.state.activeUserId).indicesSelectedModels
+            .flatMap((item) => aircrafts
+              .filter((el) => item === el.id))
+            .sort((a, b) => a.name.brief.localeCompare(b.name.brief))
+            : []
         }))
-
-
   };
 
   //! 3.localStorage - Оновлення(синхронізація) localStorage при кожній зміні indicesSelectedModels
@@ -221,6 +225,27 @@ export class App extends Component {
       //     //   indicesSelectedModels: JSON.parse(localStorage.getItem("selectedModelsId")) || [], //! масив індексів обраних моделей
       //     selectedModelsArrAfterFiltration: (JSON.parse(localStorage.getItem("selectedModelsId")) || []).flatMap((item) => aircrafts.filter((el) => item === el.id)), //! дубльоване значення selectedModels після фільтрації
       //   })
+    }
+
+    if (
+      prevState.activeUser === this.state.activeUser
+      &&
+      prevState.indicesSelectedModels !== this.state.indicesSelectedModels
+      &&
+      (prevState.indicesSelectedModels.length || this.state.indicesSelectedModels.length)
+     ) {
+
+      console.log("‼️ Змінився масив індексів обраних моделей")
+
+      console.log("❓ prevState.indicesSelectedModels:", prevState.indicesSelectedModels);
+      console.log("❓ this.state.indicesSelectedModels:", this.state.indicesSelectedModels);
+
+      console.log("❓ prevState.activeUser:", prevState.activeUser);
+      console.log("❓ this.state.activeUser:", this.state.activeUser);
+
+
+      //todo оновити (за допомогою patch) масив обраних моделей активного користувача на базі даних
+      axios.patch(`http://localhost:3000/usersAircraftsTest/${this.state.activeUserId}`, { indicesSelectedModels: this.state.indicesSelectedModels })
     }
   };
 
@@ -716,7 +741,7 @@ export class App extends Component {
       const response = await axios.get("http://localhost:3000/usersAircraftsTest")
       console.log("✅ response.data: ", response.data)
 
-      
+
 
       //? Оновлюємо список користувачів users в State
       this.setState({
@@ -806,6 +831,7 @@ export class App extends Component {
       indicesSelectedModels: selectedModelsId,
       // selectedModels: (JSON.parse(localStorage.getItem("selectedModelsId")) || []).flatMap((item) => aircrafts.filter((el) => item === el.id)),
       selectedModels: selectedModelsId.flatMap((item) => aircrafts.filter((el) => item === el.id)).sort((a, b) => a.name.brief.localeCompare(b.name.brief)), //? масив обраних моделей,
+      // selectedModels: selectedModelsId.flatMap((item) => aircrafts.filter((el) => item === el.id)),
 
       //! Логіка скидання всіх форм та інпутів при зміни стану користувача
 
