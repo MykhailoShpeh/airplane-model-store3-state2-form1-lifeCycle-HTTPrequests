@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { fetchUsersAircrafts, fetchPokemon } from '@/services'
+import { fetchUsersAircrafts, fetchPokemon,  loadData} from '@/services'
 
 import css from './FormRegistration.module.css'
 
@@ -29,13 +29,13 @@ export class FormRegistration extends Component {
 
     //? Метод-обгортка для отримання даних за допомогою колбек функції fetchData
     //? Метод отримуєння масив користувачів users з json-server: "http://localhost:3000/usersAircrafts"
-    loadData = async (fetchData) => {
-        try {
-            return fetchData()
-        } catch (error) {
-            console.log("❌", error);
-        };
-    };
+    // loadData = async (fetchData) => {
+    //     try {
+    //         return fetchData()
+    //     } catch (error) {
+    //         console.log("❌", error);
+    //     };
+    // };
 
     handleSubmit = async event => {
         event.preventDefault();
@@ -50,7 +50,7 @@ export class FormRegistration extends Component {
         //todo та false, якщо такого userEmail немає в масиві об'єктів users (для цього потрібно перебрати масив users відповідним перебираючим методом масиву)
         //todo 3. вивести відповідне повідомлення (alert) користувачу, якщо такий email уже існує 
 
-        const users = await this.loadData(fetchUsersAircrafts); //? завантажуємо "свіженких" users з json-server: "http://localhost:3000/usersAircrafts"
+        const users = await loadData(fetchUsersAircrafts); //? завантажуємо "свіженких" users з json-server: "http://localhost:3000/usersAircrafts"
         console.log("users: ", users)
         //! 2. Створюємо змінну, яка дасть відповідь чи є цей користувач
         const isEmailNotUnique = users.some(user => user.userEmail === userEmail)
@@ -63,7 +63,7 @@ export class FormRegistration extends Component {
 
         //? Створюємо значення додаткових властивостей userAvatar і userNickName
 
-        const pokemon = await this.loadData(fetchPokemon);
+        const pokemon = await loadData(fetchPokemon);
 
         const userNickName = pokemon.name;
 

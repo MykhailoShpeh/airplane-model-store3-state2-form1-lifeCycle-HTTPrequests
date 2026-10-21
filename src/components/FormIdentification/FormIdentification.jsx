@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 // import aircraftsApi from '@/services/aircrafts-api.js';
 
-import { fetchUsersAircrafts } from '@/services'
+import { fetchUsersAircrafts, loadData } from '@/services'
 
 import css from './FormIdentification.module.css'
 
@@ -24,13 +24,13 @@ export class FormIdentification extends Component {
 
     //? Метод-обгортка для отримання даних за допомогою колбек функції fetchData
     //? Метод отримуєння масив користувачів users з json-server: "http://localhost:3000/usersAircrafts"
-    loadData = async (fetchData) => {
-        try {
-            return fetchData()
-        } catch (error) {
-            console.log("❌", error);
-        };
-    };
+    // loadData = async (fetchData) => {
+    //     try {
+    //         return fetchData()
+    //     } catch (error) {
+    //         console.log("❌", error);
+    //     };
+    // };
 
 
 
@@ -43,7 +43,7 @@ export class FormIdentification extends Component {
         //! Перевірка на наявність userEmail (Ідентифікація)
         //! 1. Забираємо users з localStorage
         //? const users = JSON.parse(localStorage.getItem('users'));
-        const users = await this.loadData(fetchUsersAircrafts); //? завантажуємо "свіженких" users з json-server: "http://localhost:3000/usersAircrafts"
+        const users = await loadData(fetchUsersAircrafts); //? завантажуємо "свіженких" users з json-server: "http://localhost:3000/usersAircrafts"
         console.log("users: ", users)
         //! 2. Створюємо змінну, яка дасть відповідь чи є цей користувач
         const isEmail = users.some(user => user.userEmail === userEmail)

@@ -19,7 +19,7 @@ import { number } from 'prop-types';
 import axios from 'axios';
 // import aircraftsApi from '@/services/aircrafts-api.js';
 
-import { fetchUsersAircrafts } from '@/services'
+import { fetchUsersAircrafts, loadData } from '@/services'
 
 import { generatesRandomNumber } from "@/utils";
 
@@ -89,13 +89,13 @@ export class App extends Component {
     modelScale: 'all'
   }
 
-  loadData = async (fetchData) => {
-    try {
-      return fetchData()
-    } catch (error) {
-      console.log("❌", error);
-    };
-  };
+  // loadData = async (fetchData) => {
+  //   try {
+  //     return fetchData()
+  //   } catch (error) {
+  //     console.log("❌", error);
+  //   };
+  // };
 
   //! 2.localStorage - Створення запису в localStorage під час першого запуску якщо його немає
   componentDidMount() {
@@ -148,7 +148,7 @@ export class App extends Component {
     //       }))
     // }, 2000)
 
-    this.loadData(fetchUsersAircrafts)
+    loadData(fetchUsersAircrafts)
       .then(users =>
         this.setState({
           users,
@@ -197,7 +197,7 @@ export class App extends Component {
       //     JSON.stringify(this.state.users)
       // );
 
-      this.loadData(fetchUsersAircrafts).then(users =>
+      loadData(fetchUsersAircrafts).then(users =>
         console.log("✅ users didUpdate: ", users)
 
       )
