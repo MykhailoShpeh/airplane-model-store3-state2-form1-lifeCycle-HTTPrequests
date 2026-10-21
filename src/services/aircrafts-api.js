@@ -29,6 +29,21 @@ export async function fetchUsersAircrafts() {
     }
 }
 
+export async function updateUserSelectedModels(activeUserID, indicesSelectedModels) {
+    const url = `${BASE_URL}${ENDPOINT_USERS_AIRCRAFTS_TEST}/${activeUserID}`;
+
+    try {
+        const response = await axios.patch(url, {indicesSelectedModels});
+        console.log("🅰️xios==>✅response-PATCHusersAircrafts/userId:", response);
+        return response.data;
+    } catch (err) {
+       //! Помилка: Інша помилка
+    console.log("🅰️xios==>❌error-PATCHusersAircrafts/userId(Інша помилка):", error);
+
+        throw err;
+    }
+}
+
 // const api = {
 //     fetchUsersAircrafts,
 // };

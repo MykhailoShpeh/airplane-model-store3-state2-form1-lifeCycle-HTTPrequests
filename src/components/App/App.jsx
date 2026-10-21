@@ -19,7 +19,7 @@ import { number } from 'prop-types';
 import axios from 'axios';
 // import aircraftsApi from '@/services/aircrafts-api.js';
 
-import { fetchUsersAircrafts, loadData } from '@/services'
+import { fetchUsersAircrafts, loadData, updateUserSelectedModels } from '@/services'
 
 import { generatesRandomNumber } from "@/utils";
 
@@ -163,6 +163,18 @@ export class App extends Component {
         }))
   };
 
+  //? ❗️ Для componentDidUpdate:
+  //? Логіка запиту на http://localhost:3000/usersAircrafts/id для зміни indicesSelectedModels знаходитьсяу окремому методі
+  updateUserInDatabase = async () => {
+    const { activeUser, indicesSelectedModels } = this.state;
+    try {
+      await updateUserSelectedModels(activeUser?.id, indicesSelectedModels);
+      console.log("✅ indicesSelectedModels успішно оновлено:", indicesSelectedModels);
+    } catch (error) {
+      console.error("❌ Помилка оновлення користувача:", error);
+    };
+  };
+
   //! 3.localStorage - Оновлення(синхронізація) localStorage при кожній зміні indicesSelectedModels
   componentDidUpdate(prevProps, prevState) {
     //! Відслідковуємо зміну властивості indicesSelectedModels
@@ -191,6 +203,7 @@ export class App extends Component {
     // }
     //! Відслідковуємо зміну властивості users
     if (prevState.users !== this.state.users) {
+      0
       console.log("Властивість users змінилася")
       //   localStorage.setItem(
       //     "users",
@@ -233,7 +246,7 @@ export class App extends Component {
       prevState.indicesSelectedModels !== this.state.indicesSelectedModels
       &&
       (prevState.indicesSelectedModels.length || this.state.indicesSelectedModels.length)
-     ) {
+    ) {
 
       console.log("‼️ Змінився масив індексів обраних моделей")
 
@@ -245,7 +258,16 @@ export class App extends Component {
 
 
       //todo оновити (за допомогою patch) масив обраних моделей активного користувача на базі даних
-      axios.patch(`http://localhost:3000/usersAircraftsTest/${this.state.activeUserId}`, { indicesSelectedModels: this.state.indicesSelectedModels })
+      // axios.patch(`http://localhost:3000/usersAircraftsTest/${this.state.activeUserId}`, { indicesSelectedModels: this.state.indicesSelectedModels })
+
+      // setUsersParameters(this.state.activeUserId, this.state.indicesSelectedModels)
+      //  loadData(
+      //  setUsersParameters(this.state.activeUserId, this.state.indicesSelectedModels)
+      // )
+
+      this.updateUserInDatabase();
+
+
     }
   };
 
@@ -342,37 +364,72 @@ export class App extends Component {
     });
   }
 
+  // getActiveId = (id) => {
+  //   console.log("id: ", id)
+  //   //! треба створити триггер, який аналізує де натиснута кнопка додати до кошику
+  //   // this.setState({
+  //   //   activeButtonIndex: id,
+  //   // })
+
+  //   if (this.state.indicesSelectedModels.includes(id)) {
+  //     console.log("Такий індекс вже є,тоді ВИДАЛЯЄМО його!❌");
+
+  //     //! не = this.state.indicesSelectedModels, а = [...this.state.indicesSelectedModels], бо при 1 варіанті ми даємо посилання замість копії, це зламає роботу state
+  //     const idArray = [...this.state.indicesSelectedModels]
+
+  //     //! index - 1 замість newindicesSelectedModels.indexOf(index) не працює!
+  //     idArray.splice(idArray.indexOf(id), 1);
+  //     this.setState({
+  //       indicesSelectedModels: idArray
+  //     })
+  //   }
+  //   else {
+  //     console.log("Такого індекса ще немає,тоді ДОДАЄМО його!✅");
+
+  //     this.setState({
+  //       indicesSelectedModels: [...this.state.indicesSelectedModels, id].sort((a, b) => a - b)
+  //     });
+  //   }
+
+  //   this.updateSelectedModels()
+
+  // }
+
   getActiveId = (id) => {
-    console.log("id: ", id)
-    //! треба створити триггер, який аналізує де натиснута кнопка додати до кошику
-    // this.setState({
-    //   activeButtonIndex: id,
-    // })
+    console.log('🆔Індекс обраної моделі ("id"):', id); //!
+    this.setState(prevState => {
+      //! Перевіряємо наявність елемента зі значенням <id> у масиві індексів обраних моделей [indicesSelectedModels]
+      const exists = prevState.indicesSelectedModels.includes(id);
+      if (exists) {
+        console.log("Такий індекс моделі вже є,тоді ВИДАЛЯЄМО його!❌");
+      } else {
+        console.log("Такого індекса моделі ще немає,тоді ДОДАЄМО його!✅");
+      };
 
-    if (this.state.indicesSelectedModels.includes(id)) {
-      console.log("Такий індекс вже є,тоді ВИДАЛЯЄМО його!❌");
+      const indicesSelectedModels = exists
+        ? [...this.state.indicesSelectedModels].splice(idArray.indexOf(id), 1)
+        : [...this.state.indicesSelectedModels, id].sort((a, b) => a - b)
 
-      //! не = this.state.indicesSelectedModels, а = [...this.state.indicesSelectedModels], бо при 1 варіанті ми даємо посилання замість копії, це зламає роботу state
-      const idArray = [...this.state.indicesSelectedModels]
+      const selectedModels = indicesSelectedModels.flatMap((item) => aircrafts.filter((el) => item === el.id))
 
-      //! index - 1 замість newindicesSelectedModels.indexOf(index) не працює!
-      idArray.splice(idArray.indexOf(id), 1);
-      this.setState({
-        indicesSelectedModels: idArray
-      })
-    }
-    else {
-      console.log("Такого індекса ще немає,тоді ДОДАЄМО його!✅");
+      //! Змінюємо indicesSelectedModels в activeUser
+      const activeUser = this.state.activeUser
+      activeUser.indicesSelectedModels = indicesSelectedModels
 
-      this.setState({
-        // activeButtonIndex: index,
-        indicesSelectedModels: [...this.state.indicesSelectedModels, id].sort((a, b) => a - b)
-      });
-    }
+      //! Змінюємо indicesSelectedModels в users
+      const users = this.state.users
+      const index = users.findIndex(user => user.id === this.state.activeUserId)
 
-    this.updateSelectedModels()
+      users[index].indicesSelectedModels = indicesSelectedModels
 
-  }
+      return {
+        indicesSelectedModels,
+        selectedModels,
+        activeUser,
+        users
+      };
+    });
+  };
 
   //! Обробка введених даних для пошуку(фільтрації) карток за ім'ям або іншими параметрами
 
