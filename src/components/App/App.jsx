@@ -159,7 +159,12 @@ export class App extends Component {
             .flatMap((item) => aircrafts
               .filter((el) => item === el.id))
             .sort((a, b) => a.name.brief.localeCompare(b.name.brief))
-            : []
+            : [],
+          selectedModelsArrAfterFiltration: this.state.activeUser ? users.find(item => item.id === this.state.activeUserId).indicesSelectedModels
+            .flatMap((item) => aircrafts
+              .filter((el) => item === el.id))
+            .sort((a, b) => a.name.brief.localeCompare(b.name.brief))
+            : [],
         }))
   };
 
@@ -397,6 +402,9 @@ export class App extends Component {
 
   getActiveId = (id) => {
     console.log('🆔Індекс обраної моделі ("id"):', id); //!
+
+    const idArray = [...this.state.indicesSelectedModels]
+
     this.setState(prevState => {
       //! Перевіряємо наявність елемента зі значенням <id> у масиві індексів обраних моделей [indicesSelectedModels]
       const exists = prevState.indicesSelectedModels.includes(id);
@@ -406,9 +414,13 @@ export class App extends Component {
         console.log("Такого індекса моделі ще немає,тоді ДОДАЄМО його!✅");
       };
 
+      // const indicesSelectedModels = exists
+      //   ? [...this.state.indicesSelectedModels].splice(idArray.indexOf(id), 1)
+      //   : [...this.state.indicesSelectedModels, id].sort((a, b) => a - b)
+
       const indicesSelectedModels = exists
-        ? [...this.state.indicesSelectedModels].splice(idArray.indexOf(id), 1)
-        : [...this.state.indicesSelectedModels, id].sort((a, b) => a - b)
+        ? prevState.indicesSelectedModels.filter(item => item !== id)
+        : [...prevState.indicesSelectedModels, id].sort((a, b) => a - b);
 
       const selectedModels = indicesSelectedModels.flatMap((item) => aircrafts.filter((el) => item === el.id))
 
@@ -1123,6 +1135,7 @@ export class App extends Component {
           totalModels={totalModels}
           selectedModels={selectedModels}
           isCartButton={isCartButton}
+          selectedModelsArrAfterFiltration={selectedModelsArrAfterFiltration}
         >
           <PlanesList
             //todo var.1
