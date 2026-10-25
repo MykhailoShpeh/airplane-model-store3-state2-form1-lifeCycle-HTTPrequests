@@ -19,7 +19,7 @@ import { number } from 'prop-types';
 import axios from 'axios';
 // import aircraftsApi from '@/services/aircrafts-api.js';
 
-import { fetchUsersAircrafts, loadData, updateUserSelectedModels } from '@/services'
+import { fetchUsersAircrafts, loadData, updateUserSelectedModels, fetchAircrafts } from '@/services'
 
 import { generatesRandomNumber } from "@/utils";
 
@@ -50,7 +50,7 @@ console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++");
 //? 2. componentDidMount():
 //? 2.1. Робимо HTTP-запит на json-server: "http://localhost:3000/usersAircrafts" ==> [users] та оновлюємо State:
 
-
+//? aircrafts --> this.state.aircrafts
 
 // export function App() {
 export class App extends Component {
@@ -62,7 +62,9 @@ export class App extends Component {
     // isAll: false,
     bgColor: "black",
     aircraftTitle: "Магазин моделей літальних апаратів",
-    aircraftArray: aircrafts,
+    aircrafts: [], //? початковий масив aircraftsArr з json-server
+    aircraftArray: aircrafts, //! запис початкового масиву aircrafts в aircraftsArr
+    // aircraftsArray: [], //? запис початкового масиву aircrafts в aircraftsArr
     buttonBackground: "",
     //! Візуалізація активної кнопки 
     activeButton: "allButton",
@@ -147,6 +149,13 @@ export class App extends Component {
     //         users
     //       }))
     // }, 2000)
+
+    loadData(fetchAircrafts)
+      .then(aircrafts =>
+        this.setState({
+          aircrafts
+        })
+      )
 
     loadData(fetchUsersAircrafts)
       .then(users =>
@@ -974,7 +983,9 @@ export class App extends Component {
     const {
       bgColor,
       aircraftTitle,
+      aircrafts,
       aircraftArray,
+      // aircraftsArray,
       activeButton,
       // activeButtonIndex,
       indicesSelectedModels,
@@ -1000,7 +1011,9 @@ export class App extends Component {
     //! Приклад початкового сортування на ім'я (за полем name.brief)
     // const selectedModels = updateSelectedModels(indicesSelectedModels, aircrafts).sort((firstModel, secondModel) => firstModel.name.brief.localeCompare(secondModel.name.brief));
     console.log("aircraftArray: ", aircraftArray);
-    const totalTypes = isCartButton ? selectedModels.length : aircraftArray.length;
+    const totalTypes = isCartButton
+      ? selectedModels.length
+      : aircraftArray.length;
 
     //! Рахуємо загальну кількість моделей <totalModels> виходячи з наявності фактичної ціни
     const totalModelsArray = isCartButton
@@ -1013,7 +1026,8 @@ export class App extends Component {
 
     const totalModels = totalModelsArray.length
     console.log("------------------------------------------------------------");
-    console.log("aircraftArray: ", aircraftArray);
+    console.log("✈️Початковий сортований масив aircrafts з json-server:", aircrafts);
+    console.log("✈️->✈️Запис початкового сортованого масиву aircrafts в aircraftsArr:", aircraftArray);
     // console.log("activeButtonIndex: ", activeButtonIndex);
     console.log("indicesSelectedModels: ", indicesSelectedModels);
     console.log('selectedModels: ', selectedModels);

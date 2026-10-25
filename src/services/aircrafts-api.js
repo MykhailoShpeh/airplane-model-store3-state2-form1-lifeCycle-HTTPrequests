@@ -14,7 +14,18 @@ const ENDPOINT_USERS_AIRCRAFTS = "usersAircrafts";
 const ENDPOINT_USERS_AIRCRAFTS_TEST = "usersAircraftsTest"; //todo: тестова DB для налаштування логіки запитів
 // const ENDPOINT_USERS_AIRCRAFTS_TEST = "usersAircraftsTest1"; //! ❌ викликає помилку 404
 
+export async function fetchAircrafts() {
+    const url = `${BASE_URL}${ENDPOINT_AIRCRAFTS}`;
 
+    try {
+        const response = await axios.get(`${url}`);
+        console.log("🅰️xios==>✅response:", response);
+        return response.data;
+    } catch (err) {
+        console.log("🅰️xios==>❌error-(інша помилка):", err);
+        throw err;
+    }
+}
 
 export async function fetchUsersAircrafts() {
     const url = `${BASE_URL}${ENDPOINT_USERS_AIRCRAFTS_TEST}`; //todo: тестова DB для налаштування логіки запитів
