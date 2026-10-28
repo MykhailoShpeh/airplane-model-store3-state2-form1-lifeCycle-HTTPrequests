@@ -19,7 +19,12 @@ import { number } from 'prop-types';
 import axios from 'axios';
 // import aircraftsApi from '@/services/aircrafts-api.js';
 
-import { fetchUsersAircrafts, loadData, updateUserSelectedModels, fetchAircrafts } from '@/services'
+import {
+  fetchAircrafts,
+  fetchUsersAircrafts,
+  loadData,
+  updateUserSelectedModels,
+} from '@/services'
 
 import { generatesRandomNumber } from "@/utils";
 
@@ -91,7 +96,8 @@ export class App extends Component {
     activeUser: null, //! 🗣 активний (авторизований) користувач
     // activeUserId: null, //! #️⃣🗣 індекс Активного (авторизованого) користувача
     activeUserId: (JSON.parse(localStorage.getItem("activeUserId")) || null), //? #️⃣🗣 індекс Активного (авторизованого) користувача
-    modelScale: 'all'
+    modelScale: 'all',
+    error: null,
   }
 
   // loadData = async (fetchData) => {
@@ -101,6 +107,57 @@ export class App extends Component {
   //     console.log("❌", error);
   //   };
   // };
+
+  //? ❗️ Для componentDidMount:
+  //? Вся логіка початкового завантаження знаходитьсяу окремому методі: loadInitialData
+  //? Робимо два HTTP-запита на json-server: "http://localhost:3000/aircrafts" і "http://localhost:3000/usersAircrafts"
+  //todo: old (без розділення логіки)
+  loadInitialData = async () => {
+    try {
+      const [aircrafts, users] = await Promise.all([
+        fetchAircrafts(),
+        fetchUsersAircrafts(),
+      ]);
+      // console.log("✈️aircrafts: ", aircrafts);
+      // console.log("👤users: ", users);
+
+      const activeUser = users.find(item => item.id === this.state.activeUserId)
+
+      activeUser
+        ? this.setState({
+          aircrafts,
+          aircraftArray: aircrafts,
+          aircraftsArrAfterFiltration: aircrafts,
+          modelsSelectedScale: aircrafts,
+          users,
+          activeUser,
+          indicesSelectedModels: activeUser.indicesSelectedModels,
+          selectedModels: activeUser.indicesSelectedModels
+            .flatMap((item) => aircrafts
+              .filter((el) => item === el.id))
+            .sort((a, b) => a.name.brief.localeCompare(b.name.brief)),
+          showModal: false
+        })
+
+        : this.setState({
+          aircrafts,
+          aircraftArray: aircrafts,
+          aircraftsArrAfterFiltration: aircrafts,
+          modelsSelectedScale: aircrafts,
+          users,
+          activeUser: null,
+          activeUserId: null,
+        })
+
+
+    } catch (error) {
+      console.log("‼️ Помилка отримання початкових даних: ", error)
+
+      this.setState({
+        error
+      })
+    }
+  }
 
   //! 2.localStorage - Створення запису в localStorage під час першого запуску якщо його немає
   componentDidMount() {
@@ -153,34 +210,43 @@ export class App extends Component {
     //       }))
     // }, 2000)
 
-    loadData(fetchAircrafts)
-      .then(aircrafts =>
-        this.setState({
-          aircrafts,
-          aircraftArray: aircrafts,
-          aircraftsArrAfterFiltration: aircrafts,
-          modelsSelectedScale: aircrafts
-        })
-      )
+    //todo: old
+    // loadData(fetchAircrafts)
+    //   .then(aircrafts =>
+    //     this.setState({
+    // aircrafts,
+    // aircraftArray: aircrafts,
+    // aircraftsArrAfterFiltration: aircrafts,
+    // modelsSelectedScale: aircrafts
+    //     })
+    //   )
 
-    loadData(fetchUsersAircrafts)
-      .then(users =>
-        this.setState({
-          users,
-          activeUser: users.find(item => item.id === this.state.activeUserId),
-          showModal: this.state.activeUser ? false : true,
-          indicesSelectedModels: this.state.activeUser ? users.find(item => item.id === this.state.activeUserId).indicesSelectedModels : [],
-          selectedModels: this.state.activeUser ? users.find(item => item.id === this.state.activeUserId).indicesSelectedModels
-            .flatMap((item) => this.state.aircrafts
-              .filter((el) => item === el.id))
-            .sort((a, b) => a.name.brief.localeCompare(b.name.brief))
-            : [],
-          selectedModelsArrAfterFiltration: this.state.activeUser ? users.find(item => item.id === this.state.activeUserId).indicesSelectedModels
-            .flatMap((item) => this.state.aircrafts
-              .filter((el) => item === el.id))
-            .sort((a, b) => a.name.brief.localeCompare(b.name.brief))
-            : [],
-        }))
+    // loadData(fetchUsersAircrafts)
+    //   .then(users =>
+    //     this.setState({
+    //       users,
+    //       activeUser: users.find(item => item.id === this.state.activeUserId),
+    //       showModal: this.state.activeUser ? false : true,
+    //       indicesSelectedModels: this.state.activeUser ? users.find(item => item.id === this.state.activeUserId).indicesSelectedModels : [],
+    //       selectedModels: this.state.activeUser ? users.find(item => item.id === this.state.activeUserId).indicesSelectedModels
+    //         .flatMap((item) => this.state.aircrafts
+    //           .filter((el) => item === el.id))
+    //         .sort((a, b) => a.name.brief.localeCompare(b.name.brief))
+    //         : [],
+    //       selectedModelsArrAfterFiltration: this.state.activeUser ? users.find(item => item.id === this.state.activeUserId).indicesSelectedModels
+    //         .flatMap((item) => this.state.aircrafts
+    //           .filter((el) => item === el.id))
+    //         .sort((a, b) => a.name.brief.localeCompare(b.name.brief))
+    //         : [],
+    //     }))
+
+    //todo: new
+    //todo_NEW-2: aircrafts + users
+    //? Вся логіка початкового завантаження знаходитьсяу окремому методі
+    //? Робимо два HTTP-запита на json-server: "http://localhost:3000/aircrafts" і "http://localhost:3000/usersAircrafts"
+    //todo: old (без розділення логіки) 
+    this.loadInitialData();
+
   };
 
   //? ❗️ Для componentDidUpdate:
@@ -973,7 +1039,7 @@ export class App extends Component {
       searchInputValue: "", //! значення пошукового інпуту
       radioButtonValue: "brief", //! значення параметра для пошуку/фільтрації радіо-кнопки
       inputSearchPlaceholder: "Введіть назву ЛА", //! значення placeholder для inputSearch
-      modelsSelectedScale: this.state.aircrafts,
+      modelsSelectedScale: this.state.aircrafts
     })
 
     //! прокрутити сторінку вгору
@@ -1009,7 +1075,8 @@ export class App extends Component {
       usersTest,
       activeUser,
       activeUserId,
-      modelScale
+      modelScale,
+      error
     } = this.state;
 
     //! Формуємо(оновлюємо) масив обраних моделей [selectedModels]
@@ -1051,6 +1118,7 @@ export class App extends Component {
     console.log("🧪usersTest: ", usersTest);
     console.log("🗣 Активний (авторизований) користувач:", activeUser);
     console.log("#️⃣🗣 Індекс Активного(авторизованого) користувача", activeUserId);
+    console.log("🛑 Помилка", error);
     console.log("------------------------------------------------------------");
 
     this.test('Виклик тестової функції')
