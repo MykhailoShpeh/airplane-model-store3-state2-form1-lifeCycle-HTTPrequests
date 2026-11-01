@@ -139,35 +139,35 @@ export class App extends Component {
       // console.log("👤users: ", users);
       const activeUser = users.find(item => item.id === this.state.activeUserId)
 
-      const sortedAircrafts = [...aircrafts].sort((a, b) =>
-        a.name.brief.localeCompare(b.name.brief)
-      );
+      // const sortedAircrafts = [...aircrafts].sort((a, b) =>
+      //   a.name.brief.localeCompare(b.name.brief)
+      // );
 
-      //todo сортуємо за наявнісью зображення (наявність у магазині)
-      const arrayYes = sortedAircrafts.filter(item => item.model.actualImages);
+      // //todo сортуємо за наявнісью зображення (наявність у магазині)
+      // const arrayYes = sortedAircrafts.filter(item => item.model.actualImages);
 
-      const arrayNo = sortedAircrafts.filter(item => !item.model.actualImages);
+      // const arrayNo = sortedAircrafts.filter(item => !item.model.actualImages);
 
-      console.log("arrayYes: ", arrayYes);
-      console.log("arrayNo: ", arrayNo);
+      // console.log("arrayYes: ", arrayYes);
+      // console.log("arrayNo: ", arrayNo);
 
-      sortedAircrafts.splice(0, sortedAircrafts.length);
-      sortedAircrafts.length = 0;
+      // sortedAircrafts.splice(0, sortedAircrafts.length);
+      // sortedAircrafts.length = 0;
 
-      sortedAircrafts.push(...arrayYes, ...arrayNo)
+      // sortedAircrafts.push(...arrayYes, ...arrayNo)
       
-      console.log("✅✈️sortedAircrafts: ", sortedAircrafts);
+      // console.log("✅✈️sortedAircrafts: ", sortedAircrafts);
 
       //! Штучно затримуємо відображення результату на 2 секунди
-      await delay(5000);
+      await delay(1000);
 
 
       activeUser
         ? this.setState({
-          aircrafts: sortedAircrafts,
-          aircraftArray: sortedAircrafts,
-          aircraftsArrAfterFiltration: sortedAircrafts,
-          modelsSelectedScale: sortedAircrafts,
+          aircrafts,
+          aircraftArray: aircrafts,
+          aircraftsArrAfterFiltration: aircrafts,
+          modelsSelectedScale: aircrafts,
           users,
           activeUser,
           indicesSelectedModels: activeUser.indicesSelectedModels,
@@ -180,10 +180,10 @@ export class App extends Component {
         })
 
         : this.setState({
-          aircrafts: sortedAircrafts,
-          aircraftArray: sortedAircrafts,
-          aircraftsArrAfterFiltration: sortedAircrafts,
-          modelsSelectedScale: sortedAircrafts,
+          aircrafts,
+          aircraftArray: aircrafts,
+          aircraftsArrAfterFiltration: aircrafts,
+          modelsSelectedScale: aircrafts,
           users,
           activeUser: null,
           activeUserId: null,

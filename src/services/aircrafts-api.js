@@ -1,5 +1,7 @@
 import axios from "axios"
 
+import { sortsAircrafts } from "@/services";
+
 //? Константи для створення url:
 const BASE_URL = "http://localhost:3000/";
 
@@ -20,7 +22,8 @@ export async function fetchAircrafts() {
     try {
         const response = await axios.get(`${url}`);
         console.log("🅰️xios==>✅response:", response);
-        return response.data;
+
+        return sortsAircrafts(response.data);
     } catch (err) {
         console.log("🅰️xios==>❌error-(інша помилка):", err);
         throw err;
@@ -44,12 +47,12 @@ export async function updateUserSelectedModels(activeUserID, indicesSelectedMode
     const url = `${BASE_URL}${ENDPOINT_USERS_AIRCRAFTS_TEST}/${activeUserID}`;
 
     try {
-        const response = await axios.patch(url, {indicesSelectedModels});
+        const response = await axios.patch(url, { indicesSelectedModels });
         console.log("🅰️xios==>✅response-PATCHusersAircrafts/userId:", response);
         return response.data;
     } catch (err) {
-       //! Помилка: Інша помилка
-    console.log("🅰️xios==>❌error-PATCHusersAircrafts/userId(Інша помилка):", error);
+        //! Помилка: Інша помилка
+        console.log("🅰️xios==>❌error-PATCHusersAircrafts/userId(Інша помилка):", error);
 
         throw err;
     }
