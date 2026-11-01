@@ -28,6 +28,11 @@ import {
 
 import { generatesRandomNumber } from "@/utils";
 
+import { ClipLoader, MoonLoader, RingLoader } from "react-spinners";
+import { Oval, ThreeDots } from "react-loader-spinner";
+import { Ring } from "ldrs/react"; //! ldrs
+import "ldrs/react/Ring.css";
+
 // import { updateSelectedModels } from '@/utils/';
 //! Приклад початкового сортування на ім'я (за полем name.brief)
 // aircrafts.sort((firstModel, secondModel) => firstModel.name.brief.localeCompare(secondModel.name.brief));
@@ -49,6 +54,10 @@ console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
 console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
+//todo 1. Відсортувати початковий масив літаків у новий масив, у якому літаки відфільтровані за ім'ям (plane.name.brief) у алфавітному порядку.
+
+//todo 2. Відсортувати відсортований масив (у якому елементи відсортовані за ім'ям) у новий, у якому літаки сортуються за наявністю посилань у plane.model.actualImages.
+
 //* ***** План переходу с localStorage на HTTP-запити с json-server *****
 //?
 //? 1. Перший Render (змінюємо деякі початкові значення State):
@@ -57,7 +66,11 @@ console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
 //? aircrafts --> this.state.aircrafts
 
-// export function App() {
+
+//! Cтворює Promise для імітації затримки HTTP-запитів, який стане fulfilled через (ms) мс
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+
 export class App extends Component {
 
   //!Фільтрація var.1
@@ -98,6 +111,7 @@ export class App extends Component {
     activeUserId: (JSON.parse(localStorage.getItem("activeUserId")) || null), //? #️⃣🗣 індекс Активного (авторизованого) користувача
     modelScale: 'all',
     error: null,
+    loader: false, //! ⏳ індикатор завантаження (лоадер)
   }
 
   // loadData = async (fetchData) => {
@@ -113,6 +127,9 @@ export class App extends Component {
   //? Робимо два HTTP-запита на json-server: "http://localhost:3000/aircrafts" і "http://localhost:3000/usersAircrafts"
   //todo: old (без розділення логіки)
   loadInitialData = async () => {
+    this.setState({
+      loader: true,
+    })
     try {
       const [aircrafts, users] = await Promise.all([
         fetchAircrafts(),
@@ -120,15 +137,37 @@ export class App extends Component {
       ]);
       // console.log("✈️aircrafts: ", aircrafts);
       // console.log("👤users: ", users);
-
       const activeUser = users.find(item => item.id === this.state.activeUserId)
+
+      const sortedAircrafts = [...aircrafts].sort((a, b) =>
+        a.name.brief.localeCompare(b.name.brief)
+      );
+
+      //todo сортуємо за наявнісью зображення (наявність у магазині)
+      const arrayYes = sortedAircrafts.filter(item => item.model.actualImages);
+
+      const arrayNo = sortedAircrafts.filter(item => !item.model.actualImages);
+
+      console.log("arrayYes: ", arrayYes);
+      console.log("arrayNo: ", arrayNo);
+
+      sortedAircrafts.splice(0, sortedAircrafts.length);
+      sortedAircrafts.length = 0;
+
+      sortedAircrafts.push(...arrayYes, ...arrayNo)
+      
+      console.log("✅✈️sortedAircrafts: ", sortedAircrafts);
+
+      //! Штучно затримуємо відображення результату на 2 секунди
+      await delay(5000);
+
 
       activeUser
         ? this.setState({
-          aircrafts,
-          aircraftArray: aircrafts,
-          aircraftsArrAfterFiltration: aircrafts,
-          modelsSelectedScale: aircrafts,
+          aircrafts: sortedAircrafts,
+          aircraftArray: sortedAircrafts,
+          aircraftsArrAfterFiltration: sortedAircrafts,
+          modelsSelectedScale: sortedAircrafts,
           users,
           activeUser,
           indicesSelectedModels: activeUser.indicesSelectedModels,
@@ -136,17 +175,20 @@ export class App extends Component {
             .flatMap((item) => aircrafts
               .filter((el) => item === el.id))
             .sort((a, b) => a.name.brief.localeCompare(b.name.brief)),
-          showModal: false
+          showModal: false,
+          loader: false
         })
 
         : this.setState({
-          aircrafts,
-          aircraftArray: aircrafts,
-          aircraftsArrAfterFiltration: aircrafts,
-          modelsSelectedScale: aircrafts,
+          aircrafts: sortedAircrafts,
+          aircraftArray: sortedAircrafts,
+          aircraftsArrAfterFiltration: sortedAircrafts,
+          modelsSelectedScale: sortedAircrafts,
           users,
           activeUser: null,
           activeUserId: null,
+          showModal: true,
+          loader: false
         })
 
 
@@ -1076,7 +1118,8 @@ export class App extends Component {
       activeUser,
       activeUserId,
       modelScale,
-      error
+      error,
+      loader,
     } = this.state;
 
     //! Формуємо(оновлюємо) масив обраних моделей [selectedModels]
@@ -1119,6 +1162,7 @@ export class App extends Component {
     console.log("🗣 Активний (авторизований) користувач:", activeUser);
     console.log("#️⃣🗣 Індекс Активного(авторизованого) користувача", activeUserId);
     console.log("🛑 Помилка", error);
+    console.log("⏳ Індикатор завантаження (лоадер):", loader);
     console.log("------------------------------------------------------------");
 
     this.test('Виклик тестової функції')
@@ -1215,38 +1259,47 @@ export class App extends Component {
         >
           <PlanesList items={helicopters} />
         </Section > */}
-        <Section
-          // isOn={this.state.isAll}
-          title={aircraftTitle}
-          bgColor={bgColor}
-          totalTypes={totalTypes}
-          totalModels={totalModels}
-          selectedModels={selectedModels}
-          isCartButton={isCartButton}
-          selectedModelsArrAfterFiltration={selectedModelsArrAfterFiltration}
-        >
-          <PlanesList
-            //todo var.1
-            // items={aircraftArray}
-            //todo var.2
-            //! Приклад початкового сортування на ім'я (за полем name.brief)
-            // items={
-            //   isCartButton
-            //   ? selectedModels.sort((firstModel, secondModel) => firstModel.name.brief.localeCompare(secondModel.name.brief))
-            //     : aircraftArray.sort((firstModel, secondModel) => firstModel.name.brief.localeCompare(secondModel.name.brief))}
-
-            items={isCartButton
-              ? selectedModels
-              : aircraftArray}
-            onActiveId={this.getActiveId}
-            indicesSelectedModels={indicesSelectedModels}
-            totalModels={totalModels}
-            // onHighlightTextProtection={this.highlightTextProtection}
-            searchInputValue={searchInputValue}
-            radioButtonValue={radioButtonValue}
-            activeuser={activeUser}
+        {loader
+          ? <RingLoader
+            size={26}
+            color="#51ff00"
+            aria-label="Завантаження покемона"
           />
-        </Section >
+
+          : <Section
+            // isOn={this.state.isAll}
+            title={aircraftTitle}
+            bgColor={bgColor}
+            totalTypes={totalTypes}
+            totalModels={totalModels}
+            selectedModels={selectedModels}
+            isCartButton={isCartButton}
+            selectedModelsArrAfterFiltration={selectedModelsArrAfterFiltration}
+          >
+
+            <PlanesList
+              //todo var.1
+              // items={aircraftArray}
+              //todo var.2
+              //! Приклад початкового сортування на ім'я (за полем name.brief)
+              // items={
+              //   isCartButton
+              //   ? selectedModels.sort((firstModel, secondModel) => firstModel.name.brief.localeCompare(secondModel.name.brief))
+              //     : aircraftArray.sort((firstModel, secondModel) => firstModel.name.brief.localeCompare(secondModel.name.brief))}
+
+              items={isCartButton
+                ? selectedModels
+                : aircraftArray}
+              onActiveId={this.getActiveId}
+              indicesSelectedModels={indicesSelectedModels}
+              totalModels={totalModels}
+              // onHighlightTextProtection={this.highlightTextProtection}
+              searchInputValue={searchInputValue}
+              radioButtonValue={radioButtonValue}
+              activeuser={activeUser}
+              loader={loader}
+            />
+          </Section >}
         {/* <Section
           // isOn={this.state.isPlanes}>
           title="Магазин моделей літаків"

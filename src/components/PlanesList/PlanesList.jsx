@@ -6,7 +6,7 @@ import { Planes } from '@/components/Planes/Planes.jsx';
 
 import { getBgColorCSSModule } from '@/utils/getBackgroundColor.js';
 
-
+import { ClipLoader, MoonLoader, RingLoader } from "react-spinners";
 
 
 //! Для визначення кольору фону картки в залежності від значення "year"
@@ -19,7 +19,8 @@ export function PlanesList({
     // onHighlightTextProtection,
     searchInputValue,
     radioButtonValue,
-    activeuser
+    activeuser,
+    loader
 }) {
     // console.log(getBgColorCSSModule(2000))
 
@@ -27,9 +28,12 @@ export function PlanesList({
     console.log("totalModels: ", totalModels);
     return (
         <>
-            {
-                totalModels == 0
-                    ? <h3 className={css.searchTitle}>Нічого не знайдено... 😔</h3>
+            {totalModels == 0
+                    ? <RingLoader
+                    size={26}
+                    color="#51ff00"
+                    aria-label="Завантаження покемона"
+                />
                     : <ul
                         className={css.list}>
                         {items.map(item =>
