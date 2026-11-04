@@ -1205,7 +1205,7 @@ export class App extends Component {
           onSignOut={this.signOut}
         />
 
-        {showModal && <ModalRegistrationIdentification
+        {showModal && users.length >= 1 && <ModalRegistrationIdentification
           onClose={this.toggleModal}
         >
           {!modalType && <FormChoiceRegistrationOrIdentification
