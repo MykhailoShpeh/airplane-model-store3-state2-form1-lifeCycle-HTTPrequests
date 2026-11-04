@@ -9,6 +9,7 @@ import '@/index.css'
 //! Aбсолютний шлях + Реекспорт
 import {
   App,
+  AppCounter,
   AppColorBox,
   AppSearchDebounce, //! Пошук елементів + Debounce
   // AppSearchDebounceTextBacklight, //! Пошук елементів + Debounce + Підсвічування тексту
@@ -18,13 +19,15 @@ import {
   AppHTTPRequestBasics,
   AppHTTPRequestAdvanced
 } from '@/components/App';
+// import { AppCounter } from './components/App/AppCounter';
 
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     {/* <BrowserRouter basename="/airplane-model-store3-state2-form1-lifeCycle-HTTPrequests"> */}
     <BrowserRouter basename="/airplane-model-store3-state2-form1-lifeCycle-HTTPrequests">
-      <App />
+      {/* <App /> */}
+      <AppCounter />
       {/* <AppColorBox />  */}
       {/* <AppSearchDebounce /> */}
       {/* <AppSearchDebounceTextBacklight /> */}

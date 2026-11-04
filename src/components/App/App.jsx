@@ -159,7 +159,7 @@ export class App extends Component {
       // console.log("✅✈️sortedAircrafts: ", sortedAircrafts);
 
       //! Штучно затримуємо відображення результату на 2 секунди
-      await delay(1000);
+      await delay(3000);
 
 
       activeUser
@@ -1205,7 +1205,7 @@ export class App extends Component {
           onSignOut={this.signOut}
         />
 
-        {showModal && users.length >= 1 && <ModalRegistrationIdentification
+        {showModal && users.length && <ModalRegistrationIdentification
           onClose={this.toggleModal}
         >
           {!modalType && <FormChoiceRegistrationOrIdentification
