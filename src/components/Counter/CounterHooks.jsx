@@ -4,7 +4,7 @@ import { Controls } from '@/components/Controls/Controls.jsx';
 import css from "./Counter.module.css";
 
 
-//! Компонент-клас
+//! Звичайний компонент функція
 export  function CounterHooks({initialValue = 9}) {
     
     const [value, setValue] = useState(initialValue)
