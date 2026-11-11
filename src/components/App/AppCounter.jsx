@@ -1,7 +1,10 @@
 import css from '@/components/App/Counter.module.css';
 import {Counter} from '@/components/Counter/Counter.jsx'
 import {CounterReactClass} from '@/components/CounterReactClass/CounterReactClass.jsx';
-import {CounterReactHooks} from '@/components/CounterReactHooks/CounterReactHooks.jsx'
+import {CounterReactHooks} from '@/components/CounterReactHooks/CounterReactHooks.jsx';
+import {CounterClass} from '@/components/Counter/CounterClass.jsx';
+import {CounterHooks} from '@/components/Counter/CounterHooks.jsx';
+
 
 //* ============================ Принцип замикання в JS (Closure) ============================
 //? Замикання (Closure) у JavaScript - це механізм,
@@ -174,8 +177,10 @@ export function AppCounter() {
             <Counter />
             <Counter initialValue={10} /> */}
 
-            <CounterReactClass />
-            <CounterReactHooks />
+            {/* <CounterReactClass />
+            <CounterReactHooks /> */}
+            <CounterClass initialValue={10}/>
+            <CounterHooks initialValue={10}/>
         </>
     );
 };
