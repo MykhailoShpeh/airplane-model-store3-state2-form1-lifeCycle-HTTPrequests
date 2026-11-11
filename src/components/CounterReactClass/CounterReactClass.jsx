@@ -1,40 +1,37 @@
-import {React, Component} from 'react'
+import React, { Component } from 'react';
+import css from "./Counter.module.css";
 
-import {Controls} from '@/components/Controls/Controls.jsx'
-import css from './CounterReactClass.module.css'
 
 export class CounterReactClass extends Component {
-    state ={
-        count: 0,
-    }
+    state = {
+        count: 0
+    };
 
-    handleIncrement = () => {
-       this.setState(prevState => {
-            return {
-                count: prevState.count + 1,
-            };
-        });
-    }
+    handleClick = () => {
+        this.setState(prevState => ({
+            count: prevState.count + 1
+        }));
+    };
 
-    handleDecrement = () => {
-       this.setState(prevState => {
-            return {
-                count: prevState.count - 1,
-            };
-        });
-    }
+    render() {
+        const { count } = this.state;
 
-    render() { 
         return (
             <div className={css.counter}>
-                <span className={css.counterValue}>{this.state.count}</span>
+                CounterReactClass
+                <p className={css.counterValue}>
+                    Кількість: {count}
+                </p>
 
-                <Controls
-                    onHandleIncrement={this.handleIncrement}
-                    onHandleDecrement={this.handleDecrement}
-                />
+                <button
+                    className={css.buttonIncrement}
+                    type="button"
+                    onClick={this.handleClick}
+                >
+                    Збільшити
+                </button>
+
             </div>
-        )
-    }
-
-}
+        );
+    };
+};
