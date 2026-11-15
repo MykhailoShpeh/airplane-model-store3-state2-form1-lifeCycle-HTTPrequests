@@ -33,6 +33,7 @@ import { Oval, ThreeDots } from "react-loader-spinner";
 import { Ring } from "ldrs/react"; //! ldrs
 import "ldrs/react/Ring.css";
 
+
 // import { updateSelectedModels } from '@/utils/';
 //! Приклад початкового сортування на ім'я (за полем name.brief)
 // aircrafts.sort((firstModel, secondModel) => firstModel.name.brief.localeCompare(secondModel.name.brief));
@@ -1203,6 +1204,7 @@ export class App extends Component {
           onClose={this.toggleModal}
           activeUser={activeUser}
           onSignOut={this.signOut}
+          loader={loader}
         />
 
         {showModal && users.length && <ModalRegistrationIdentification

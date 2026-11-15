@@ -1,21 +1,25 @@
 import React from "react";
 
-import css from './RegistrationIdentification.module.css'
+import { Ring } from "ldrs/react";
 
 import template from "./template-profile.jpg"
+
+import css from './RegistrationIdentification.module.css'
 
 export function RegistrationIdentification({
     onClose,
     activeUser,
-    onSignOut
+    onSignOut,
+    loader
 }) {
 
-    console.log("👍activeUser: ", activeUser);
+    // console.log("👍activeUser: ", activeUser);
+    // console.log("🔥 loader:", loader)
 
     return (
 
         <div className={css.boxRegistrationIdentification}>
-            {!activeUser &&
+            {!activeUser && !loader &&
                 <>
                     <h2 className={css.titleRegistrationIdentification}>Для здійснення покупок необхідно увійти до свого акаунту →</h2>
                     <div className={css.buttonBoxRegistrationIdentification}>
@@ -40,7 +44,7 @@ export function RegistrationIdentification({
                 </>
             }
 
-            {activeUser &&
+            {activeUser && !loader &&
                 <>
                     <h2 className={css.titleRegistrationIdentification}>
                         Вітаю вас,
@@ -50,12 +54,12 @@ export function RegistrationIdentification({
                         </span>
 
                         {activeUser.userNickName &&
-                            
+
                             <span className={css.pokemonName}>&nbsp;({activeUser.userNickName})</span>}
                     </h2>
 
-                    
-                    <img className={css.profilePicture} src={activeUser.userAvatar ? activeUser.userAvatar : template} alt="pfp"/>
+
+                    <img className={css.profilePicture} src={activeUser.userAvatar ? activeUser.userAvatar : template} alt="pfp" />
 
                     <button
                         className={`${css.buttonRegistrationIdentification} ${css.buttonSignOut}`}
@@ -65,6 +69,14 @@ export function RegistrationIdentification({
                         SignOut
                     </button>
                 </>
+            }
+
+            {loader &&
+                <Ring
+                    size={36}
+                    speed={1.5}
+                    bgOpacity={0.25}
+                />
             }
         </div>
     )
