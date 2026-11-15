@@ -8,6 +8,9 @@ import { getBgColorCSSModule } from '@/utils/getBackgroundColor.js';
 
 import { ClipLoader, MoonLoader, RingLoader } from "react-spinners";
 
+import { Ring } from "ldrs/react";
+
+
 
 //! Для визначення кольору фону картки в залежності від значення "year"
 
@@ -25,50 +28,51 @@ export function PlanesList({
     // console.log(getBgColorCSSModule(2000))
 
     // console.log("items: ", items)
-    console.log("totalModels: ", totalModels);
+    // console.log("totalModels: ", totalModels);
+    console.log("🔥loader: ", loader);
     return (
         <>
-            {totalModels == 0
-                    ? <RingLoader
-                    size={26}
-                    color="#51ff00"
-                    aria-label="Завантаження покемона"
-                />
-                    : <ul
-                        className={css.list}>
-                        {items.map(item =>
-                            <li
-                                className={css[getBgColorCSSModule(item.info.year)]}
-                                key={item.id} >
-                                <Planes
-                                    id={item.id}
-                                    urlMain={item.url.main}
-                                    urlPromotional={item.url.promotional}
-                                    urlActual={item.model.actualImages}
-                                    urlActualFull={item.model.actualFullImages}
-                                    nameBrief={item.name.brief}
-                                    nameFull={item.name.full}
-                                    nickname={item.name.nickname}
-                                    year={item.info.year}
-                                    startTime={item.manufacturing.start}
-                                    endTime={item.manufacturing.end}
-                                    countries={item.info.countries}
-                                    type={item.info.type}
-                                    price={item.info.price}
-                                    description={item.info.description}
-                                    backgroundCardTitle={item.aircraftType}
-                                    onActiveId={onActiveId}
-                                    indicesSelectedModels={indicesSelectedModels}
-                                    // onHighlightTextProtection={onHighlightTextProtection}
-                                    searchInputValue={searchInputValue}
-                                    radioButtonValue={radioButtonValue}
-                                    modelColorPrice={item.model.colorsPrice}
-                                    activeuser={activeuser}
-                                />
-                            </li>
-                        )}
-                    </ul>
-            }
+          {loader ? <Ring
+                size={36}
+                speed={1.5}
+                bgOpacity={0.25}
+                color='red'
+            />
+            :<ul
+                className={css.list}>
+                {items.map(item =>
+                    <li
+                        className={css[getBgColorCSSModule(item.info.year)]}
+                        key={item.id} >
+                        <Planes
+                            id={item.id}
+                            urlMain={item.url.main}
+                            urlPromotional={item.url.promotional}
+                            urlActual={item.model.actualImages}
+                            urlActualFull={item.model.actualFullImages}
+                            nameBrief={item.name.brief}
+                            nameFull={item.name.full}
+                            nickname={item.name.nickname}
+                            year={item.info.year}
+                            startTime={item.manufacturing.start}
+                            endTime={item.manufacturing.end}
+                            countries={item.info.countries}
+                            type={item.info.type}
+                            price={item.info.price}
+                            description={item.info.description}
+                            backgroundCardTitle={item.aircraftType}
+                            onActiveId={onActiveId}
+                            indicesSelectedModels={indicesSelectedModels}
+                            // onHighlightTextProtection={onHighlightTextProtection}
+                            searchInputValue={searchInputValue}
+                            radioButtonValue={radioButtonValue}
+                            modelColorPrice={item.model.colorsPrice}
+                            activeuser={activeuser}
+                        />
+                    </li>
+                )}
+            </ul>}
+
         </>
     )
 }

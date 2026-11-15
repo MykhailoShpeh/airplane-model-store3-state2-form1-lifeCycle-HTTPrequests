@@ -1261,14 +1261,7 @@ export class App extends Component {
         >
           <PlanesList items={helicopters} />
         </Section > */}
-        {loader
-          ? <RingLoader
-            size={26}
-            color="#51ff00"
-            aria-label="Завантаження покемона"
-          />
-
-          : <Section
+         <Section
             // isOn={this.state.isAll}
             title={aircraftTitle}
             bgColor={bgColor}
@@ -1301,7 +1294,7 @@ export class App extends Component {
               activeuser={activeUser}
               loader={loader}
             />
-          </Section >}
+          </Section >
         {/* <Section
           // isOn={this.state.isPlanes}>
           title="Магазин моделей літаків"
