@@ -160,7 +160,7 @@ export class App extends Component {
       // console.log("✅✈️sortedAircrafts: ", sortedAircrafts);
 
       //! Штучно затримуємо відображення результату на 2 секунди
-      await delay(3000);
+      await delay(2000);
 
 
       activeUser

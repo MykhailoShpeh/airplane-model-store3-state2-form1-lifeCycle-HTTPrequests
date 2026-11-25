@@ -8,6 +8,8 @@ import { ColorBox1Hooks } from '@/components/ColorBox/ColorBox-1-Hooks.jsx'
 
 import { ColorBox1HooksNew } from '@/components/ColorBox/ColorBox-1-HooksNew.jsx'
 
+import { ColorBox1HooksUseEffect } from '@/components/ColorBox/ColorBox-1-HooksUseEffect'
+
 const colorBoxOptions = [
     { label: 'red', color: '#ff0000' },
     { label: 'orange', color: '#ffa500' },
@@ -24,9 +26,10 @@ export function AppColorBox() {
             {/* <ColorBox colorBoxes={colorBoxOptions} /> */}
             {/* <ColorBoxLifeCycle colorBoxes={colorBoxOptions} /> */}
             {/* //! Hooks */}
-            <ColorBox1Class colorBoxes={colorBoxOptions} />
-            <ColorBox1Hooks colorBoxes={colorBoxOptions} />
+            {/* <ColorBox1Class colorBoxes={colorBoxOptions} />
+            <ColorBox1Hooks colorBoxes={colorBoxOptions} /> */}
             <ColorBox1HooksNew colorBoxes={colorBoxOptions} />
+            <ColorBox1HooksUseEffect colorBoxes={colorBoxOptions} />
         </>
     )
 };

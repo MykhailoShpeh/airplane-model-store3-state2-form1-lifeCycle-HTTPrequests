@@ -18,18 +18,20 @@ import {
   AppComplexForms, //! 4.4.3.Складні форми
   AppHTTPRequestBasics,
   AppHTTPRequestAdvanced,
-  AppUseEffect1
+  AppUseEffect1,
+  AppUseEffect2
 } from '@/components/App';
 // import { AppCounter } from './components/App/AppCounter';
 
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  // <StrictMode>
+  <>
     {/* <BrowserRouter basename="/airplane-model-store3-state2-form1-lifeCycle-HTTPrequests"> */}
     <BrowserRouter basename="/airplane-model-store3-state2-form1-lifeCycle-HTTPrequests">
       {/* <App /> */}
       {/* <AppCounter /> */}
-      {/* <AppColorBox />  */}
+      <AppColorBox /> 
       {/* <AppSearchDebounce /> */}
       {/* <AppSearchDebounceTextBacklight /> */}
       {/* <AppUncontrolledElementsForm onSubmit={values => console.log(values)} /> */}
@@ -39,8 +41,10 @@ createRoot(document.getElementById('root')).render(
       {/* //! HTTPRequest */}
       {/* <AppHTTPRequestBasics /> */}
       {/* <AppHTTPRequestAdvanced /> */}
-      <AppUseEffect1 />
+      {/* <AppUseEffect1 />  */}
+      {/* <AppUseEffect2 /> */}
     </BrowserRouter>
-  </StrictMode >
+    </>
+  // </StrictMode >
 );
 

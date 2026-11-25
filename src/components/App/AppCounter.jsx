@@ -4,7 +4,8 @@ import {CounterReactClass} from '@/components/CounterReactClass/CounterReactClas
 import {CounterReactHooks} from '@/components/CounterReactHooks/CounterReactHooks.jsx';
 import {CounterClass} from '@/components/Counter/CounterClass.jsx';
 import {CounterHooks} from '@/components/Counter/CounterHooks.jsx';
-
+import {ClockContainerClass} from '@/components/Clock/ClockContainerClass.jsx';
+import {ClockContainerHooks} from '@/components/Clock/ClockContainerHooks.jsx';
 
 //* ============================ Принцип замикання в JS (Closure) ============================
 //? Замикання (Closure) у JavaScript - це механізм,
@@ -179,8 +180,10 @@ export function AppCounter() {
 
             {/* <CounterReactClass />
             <CounterReactHooks /> */}
-            <CounterClass initialValue={10}/>
-            <CounterHooks initialValue={10}/>
+            {/* <CounterClass initialValue={10}/>
+            <CounterHooks initialValue={10}/> */}
+            <ClockContainerClass />
+            <ClockContainerHooks />
         </>
     );
 };
